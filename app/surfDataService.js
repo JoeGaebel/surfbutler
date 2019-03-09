@@ -2,23 +2,31 @@ const axios = require('axios');
 const getClosestTimeEntry = require('./utilities/timeEntry').getClosest;
 const compassToDirection = require('./utilities/compass').toDirection;
 
-exports.getSummary = async (spotName, spotId) => {
-    console.log(`
-        The surf report for ${spotName} currently is:
-        ${ await getSwellSummary(spotId)}
-        ${ await getWaveHeightSummary(spotId)}
-        ${ await getTideSummary(spotId)}
-        ${ await getWeatherSummary(spotId)}
-        ${ await getWindSummary(spotId)}
-    `);
-};
+exports.getSummary = async (spotName, spotId) => `The surf report for ${spotName} currently is:
+${ await getSwellSummary(spotId)}
+${ await getWaveHeightSummary(spotId)}
+${ await getTideSummary(spotId)}
+${ await getWeatherSummary(spotId)}
+${ await getWindSummary(spotId)}`;
 
 const getSwellSummary = async (spotId) => {
-    /* eslint-disable */
     const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${spotId}&days=1&intervalHours=4&maxHeights=false`;
-    /* eslint-enable */
-return 'Swell: 1.2m at 6s NE';
-};
+    const swellResponse = await queryEndpoint(swellUrl);
+    const swells = getClosestTimeEntry(swellResponse.wave).swells;
+    
+    let swellsText = ``;
+    swells.forEach(swell => {
+        const height = swell.height;
+        const period = swell.period;
+        const direction = compassToDirection(swell.direction);
+
+        if (height > 0 && period > 0) {
+            swellsText += `\nSwell: ${height}m @ ${period}s from ${direction}`
+        }
+    });
+
+    return swellsText;
+}
 
 const getWaveHeightSummary = async (spotId) => {
 const waveHeightUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${spotId}&days=1&intervalHours=4&maxHeights=true`;
