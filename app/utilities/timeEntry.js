@@ -1,4 +1,4 @@
-const getCurrentTimestamp = require('./clock').getCurrentTimestamp
+const getCurrentTimestamp = require('./clock').getCurrentTimestamp;
 
 exports.getClosest = (timeEntries) => {
     const currentTimestamp = getCurrentTimestamp();
@@ -13,4 +13,4 @@ exports.getClosest = (timeEntries) => {
     });
 
     return closestElement;
-}
+};

@@ -1,55 +1,55 @@
 exports.toDirection = (degrees) => {
     let direction;
     if (degrees >= 0 && degrees <= 11.25) {
-        direction = "N";
+        direction = 'N';
     }
     if (degrees > 348.75 && degrees <= 360) {
-        direction = "N";
+        direction = 'N';
     }
     if (degrees > 11.25 && degrees <= 33.75) {
-        direction = "NNE";
+        direction = 'NNE';
     }
     if (degrees > 33.75 && degrees <= 56.25) {
-        direction = "NE";
+        direction = 'NE';
     }
     if (degrees > 56.25 && degrees <= 78.75) {
-        direction = "ENE";
+        direction = 'ENE';
     }
     if (degrees > 78.75 && degrees <= 101.25) {
-        direction = "E";
+        direction = 'E';
     }
     if (degrees > 101.25 && degrees <= 123.75) {
-        direction = "ESE";
+        direction = 'ESE';
     }
     if (degrees > 123.75 && degrees <= 146.25) {
-        direction = "SE";
+        direction = 'SE';
     }
     if (degrees > 146.25 && degrees <= 168.75) {
-        direction = "SSE";
+        direction = 'SSE';
     }
     if (degrees > 168.75 && degrees <= 191.25) {
-        direction = "S";
+        direction = 'S';
     }
     if (degrees > 191.25 && degrees <= 213.75) {
-        direction = "SSW";
+        direction = 'SSW';
     }
     if (degrees > 213.75 && degrees <= 236.25) {
-        direction = "SW";
+        direction = 'SW';
     }
     if (degrees > 236.25 && degrees <= 258.75) {
-        direction = "WSW";
+        direction = 'WSW';
     }
     if (degrees > 258.75 && degrees <= 281.25) {
-        direction = "W";
+        direction = 'W';
     }
     if (degrees > 281.25 && degrees <= 303.75) {
-        direction = "WNW";
+        direction = 'WNW';
     }
     if (degrees > 303.75 && degrees <= 326.25) {
-        direction = "NW";
+        direction = 'NW';
     }
     if (degrees > 326.25 && degrees <= 348.75) {
-        direction = "NNW";
+        direction = 'NNW';
     }
     return direction;
-}
+};
