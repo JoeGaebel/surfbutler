@@ -8,9 +8,6 @@ exports.handler = async () => {
 
     let response = {
         statusCode: 200,
-        headers: {
-            'x-custom-header' : 'my custom header value'
-        },
         body: surfSummary
     };
     console.log('response: ' + JSON.stringify(response));
