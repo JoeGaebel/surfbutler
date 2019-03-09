@@ -3,7 +3,7 @@ const AWS = require('aws-sdk');
 // Set region
 AWS.config.update({ region: 'ap-southeast-2' });
 // Create publish parameters
-const phoneNumbers = ['+61439363614', '+61468921570'];
+const phoneNumbers = ['+61439363614', '+61468921570', '+17347176802'];
 
 exports.send = (Message) => {
     phoneNumbers.forEach((PhoneNumber) => {
