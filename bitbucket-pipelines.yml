@@ -18,7 +18,7 @@ pipelines:
           script:
             - npm install
             - npm test
-            - zip surfbutler.zip app/**
+            - zip surfbutler.zip -r app
           artifacts: 
             - surfbutler.zip
       - step:
