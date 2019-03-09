@@ -19,7 +19,7 @@ pipelines:
           script:
             - npm install
             - npm test
-            - tar -zcvf target/surfbutler.tar.gz app
+            - tar -zcvf surfbutler.tar.gz app
             # Update lambda code and publish a new version
             - pipe: atlassian/aws-lambda-deploy:0.2.1
               variables:
