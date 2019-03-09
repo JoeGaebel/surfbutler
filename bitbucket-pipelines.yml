@@ -1,0 +1,41 @@
+image: node:6.9.4
+
+pipelines:
+  default:
+    - step:
+        name: Build and Test
+        caches:
+          - node
+        script:
+          - npm install
+          - npm test
+          - zip surfbutler.zip ./*
+        artifacts: 
+          - surfbutler.zip
+    - step:
+        name: Deploy to Staging
+        deployment: staging
+        script:
+          # Update lambda code and publish a new version
+          - pipe: atlassian/aws-lambda-deploy:0.2.1
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_REGION
+              FUNCTION_NAME: $AWS_FUNCTION_NAME
+              COMMAND: 'update'
+              ZIP_FILE: 'surfbutler.zip'
+
+          # Read results from the update pipe into environment variables
+          - source pipe.meta.env
+
+          # Point an alias to the new lambda version
+          - pipe: atlassian/aws-lambda-deploy:0.2.1
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_REGION
+              FUNCTION_NAME: $AWS_FUNCTION_NAME
+              COMMAND: 'alias'
+              ALIAS: 'staging'
+              VERSION: '${function_version}'       
