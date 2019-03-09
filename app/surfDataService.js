@@ -2,12 +2,12 @@ const axios = require('axios');
 const getClosestTimeEntry = require('./utilities/timeEntry').getClosest;
 const compassToDirection = require('./utilities/compass').toDirection;
 
-exports.getSummary = async (spotName, spotId) => `The surf report for ${ spotName } currently is:
+exports.getSummary = async (spotName, spotId) => console.log(`The surf report for ${ spotName } currently is:
 ${ await getSwellSummary(spotId) }
 ${ await getWaveHeightSummary(spotId) }
 ${ await getTideSummary(spotId) }
 ${ await getWeatherSummary(spotId) }
-${ await getWindSummary(spotId) }`;
+${ await getWindSummary(spotId) }`);
 
 const getSwellSummary = async (spotId) => {
     const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=1&intervalHours=4&maxHeights=false`;
@@ -47,6 +47,7 @@ const getWeatherSummary = async (spotId) => {
     const weatherResponse = await queryEndpoint(weatherUrl);
 
     const sunrise = new Date(weatherResponse.sunlightTimes[0].sunrise * 1000).toLocaleTimeString([], {
+        timeZone: "Australia/Sydney",
         hour: '2-digit',
         minute: '2-digit',
         hour12: true
