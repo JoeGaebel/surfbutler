@@ -9,11 +9,18 @@ pipelines:
         script:
           - npm install
           - npm test
-          - zip surfbutler.zip app/**
-        artifacts: 
-          - surfbutler.zip
   branches:
     master:
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm install
+            - npm test
+            - zip surfbutler.zip app/**
+          artifacts: 
+            - surfbutler.zip
       - step:
           name: Deploy to Staging
           deployment: staging
