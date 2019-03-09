@@ -1,18 +1,18 @@
 const messageService = require('./messageService');
 const surfDataService = require('./surfDataService');
 
-exports.handler = async (event) => {
+exports.handler = async () => {
     const spotIdBondi = '5842041f4e65fad6a7708bf8';
     const surfSummary = await surfDataService.getSummary('Bondi', spotIdBondi);
     messageService.send(surfSummary);
 
     let response = {
-        statusCode: responseCode,
+        statusCode: 200,
         headers: {
-            "x-custom-header" : "my custom header value"
+            'x-custom-header' : 'my custom header value'
         },
         body: surfSummary
     };
-    console.log("response: " + JSON.stringify(response))
+    console.log('response: ' + JSON.stringify(response));
     return response;
 };
