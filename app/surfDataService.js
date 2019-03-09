@@ -47,7 +47,7 @@ const getWeatherSummary = async (spotId) => {
     const weatherResponse = await queryEndpoint(weatherUrl);
 
     const sunrise = new Date(weatherResponse.sunlightTimes[0].sunrise * 1000).toLocaleTimeString([], {
-        timeZone: "Australia/Sydney",
+        timeZone: 'Australia/Sydney',
         hour: '2-digit',
         minute: '2-digit',
         hour12: true

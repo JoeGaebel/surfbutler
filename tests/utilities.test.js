@@ -7,14 +7,14 @@ describe('getClosestTimeEntry', () => {
     const currentTime = 1552068000;
     beforeEach(() => {
         getCurrentTimestamp.mockReturnValue(currentTime);
-    })
+    });
 
     it('Get the closest time entry', () => {
         const elements = [
-            { "timestamp": currentTime + 100 },
-            { "timestamp": currentTime - 100 },
-            { "timestamp": currentTime + 50 },
-        ]
+            { 'timestamp': currentTime + 100 },
+            { 'timestamp': currentTime - 100 },
+            { 'timestamp': currentTime + 50 },
+        ];
 
         const closest = getClosestTimeEntry(elements);
         expect(closest.timestamp).toEqual(currentTime + 50);
