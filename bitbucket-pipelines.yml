@@ -19,7 +19,9 @@ pipelines:
           script:
             - npm install
             - npm test
-            - tar -zcvf surfbutler.tar.gz app
+            - apt-get update
+            - apt-get --assume-yes install zip
+            - zip -r surfbutler.zip app
             # Update lambda code and publish a new version
             - pipe: atlassian/aws-lambda-deploy:0.2.1
               variables:
@@ -28,7 +30,7 @@ pipelines:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 FUNCTION_NAME: $AWS_FUNCTION_NAME
                 COMMAND: 'update'
-                ZIP_FILE: 'surfbutler.tar.gz'
+                ZIP_FILE: 'surfbutler.zip'
 
             # Read results from the update pipe into environment variables
             - source pipe.meta.env
