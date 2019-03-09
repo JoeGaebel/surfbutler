@@ -1,4 +1,6 @@
+const messageService = require('./messageService');
+
 exports.handler = (event, context, callback) => {
-    // TODO implement
+    messageService.send('Hello World!');
     callback(null, 'Hello from Lambda feat. Bitbucket');
 };
