@@ -21,7 +21,7 @@ pipelines:
             - npm test
             - apt-get update
             - apt-get --assume-yes install zip
-            - zip -r surfbutler.zip app
+            - zip -r surfbutler.zip app package.json
             # Update lambda code and publish a new version
             - pipe: atlassian/aws-lambda-deploy:0.2.1
               variables:
