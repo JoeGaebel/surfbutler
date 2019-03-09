@@ -12,21 +12,6 @@ pipelines:
   branches:
     master:
       - step:
-<<<<<<< HEAD
-=======
-          name: Build and Test
-          caches:
-            - node
-          script:
-            - npm install
-            - npm test
-            - sudo apt-get update
-            - sudo apt-get install zip
-            - zip surfbutler.zip -r app
-          artifacts: 
-            - surfbutler.zip
-      - step:
->>>>>>> 0bc11b932ad5d9b754862e8a170d70d4a4141067
           name: Deploy to Staging
           deployment: staging
           script:
