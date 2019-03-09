@@ -10,7 +10,7 @@ exports.send = (Message) => {
         const params = { Message, PhoneNumber };
 
         // Create promise and SNS service object
-        var publishTextPromise = new AWS.SNS({ apiVersion: '2010-03-31' }).publish(params).promise();
+        publishTextPromise = new AWS.SNS({ apiVersion: '2010-03-31' }).publish(params).promise();
 
         // Handle promise's fulfilled/rejected states
         publishTextPromise
