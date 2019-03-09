@@ -2,6 +2,8 @@
   "extends": "eslint:recommended",
   "rules": {
     "semi": ["error", "always"],
+    "object-curly-spacing": ["error", "always"],
+    "template-curly-spacing": ["error", "always"],
     "quotes": ["error", "single"],
     "no-console": ["off", "always"]
   },
