@@ -18,6 +18,8 @@ pipelines:
           script:
             - npm install
             - npm test
+            - sudo apt-get update
+            - sudo apt-get install zip
             - zip surfbutler.zip -r app
           artifacts: 
             - surfbutler.zip
