@@ -1,0 +1,17 @@
+{
+  "name": "surfbutler",
+  "version": "1.0.0",
+  "description": "Get notified about the best beach to surf at.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/dreissenberger/surfbutler.git"
+  },
+  "keywords": [],
+  "author": "Daniel Reissenberger",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/dreissenberger/surfbutler#readme"
+}
