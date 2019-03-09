@@ -9,7 +9,7 @@ pipelines:
         script:
           - npm install
           - npm test
-          - zip surfbutler.zip ./*
+          - zip surfbutler.zip app/**
         artifacts: 
           - surfbutler.zip
   branches:
