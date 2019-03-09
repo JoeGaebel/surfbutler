@@ -2,12 +2,17 @@ const axios = require('axios');
 const getClosestTimeEntry = require('./utilities/timeEntry').getClosest;
 const compassToDirection = require('./utilities/compass').toDirection;
 
-exports.getSummary = async (spotName, spotId) => `The surf report for ${ spotName } currently is:
-${ await getSwellSummary(spotId) }
-${ await getWaveHeightSummary(spotId) }
-${ await getTideSummary(spotId) }
-${ await getWeatherSummary(spotId) }
-${ await getWindSummary(spotId) }`;
+exports.getSummary = async (spotName, spotId) => {
+    const values = await Promise.all([
+        getSwellSummary(spotId),
+        getWaveHeightSummary(spotId),
+        getTideSummary(spotId),
+        getWeatherSummary(spotId),
+        getWindSummary(spotId)
+    ]);
+
+    return `The surf report for ${ spotName } currently is: \n${ values.join('\n') }`;
+};
 
 const getSwellSummary = async (spotId) => {
     const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=1&intervalHours=4&maxHeights=false`;
