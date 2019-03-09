@@ -6,5 +6,5 @@ exports.handler = async (event, context, callback) => {
     const surfSummary = await surfDataService.getSummary('Bondi', spotIdBondi);
     messageService.send(surfSummary);
 
-    callback(null, 'Hello from Lambda feat. Bitbucket');
+    callback(null, surfSummary);
 };
