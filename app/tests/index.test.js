@@ -19,6 +19,8 @@ describe('handler', () => {
         expect(getSummary).toHaveBeenCalledWith('Tamarama', '584204204e65fad6a77093eb');
         expect(getSummary).toHaveBeenCalledWith('Bronte', '584204204e65fad6a77093ef');
 
-        expect(send).toHaveBeenCalledWith('Bondi summary\nTamarama summary\nBronte summary');
+        expect(send).toHaveBeenCalledWith('Bondi summary');
+        expect(send).toHaveBeenCalledWith('Tamarama summary');
+        expect(send).toHaveBeenCalledWith('Bronte summary');
     });
 });
