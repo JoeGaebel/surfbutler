@@ -4,6 +4,7 @@
   "description": "Get notified about the best beach to surf at.",
   "main": "index.js",
   "scripts": {
+    "debug": "node -e \"require('./app/index').handler()\"",
     "test": "eslint . --fix && jest",
     "lint": "eslint . --fix"
   },
@@ -16,6 +17,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/dreissenberger/surfbutler#readme",
   "dependencies": {
+    "aws-sdk": "^2.432.0",
     "axios": "^0.18.0"
   },
   "devDependencies": {

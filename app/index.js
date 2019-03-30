@@ -1,15 +1,22 @@
-const messageService = require('./messageService');
-const surfDataService = require('./surfDataService');
+const { send } = require('./messageService');
+const { getSummary } = require('./surfDataService');
 
 exports.handler = async () => {
-    const spotIdBondi = '5842041f4e65fad6a7708bf8';
-    const surfSummary = await surfDataService.getSummary('Bondi', spotIdBondi);
-    messageService.send(surfSummary);
+    const bondiSpotId = '5842041f4e65fad6a7708bf8';
+    const tamaramaSpotId = '584204204e65fad6a77093eb';
+    const bronteSpotId = '584204204e65fad6a77093ef';
 
-    const response = {
-        statusCode: 200,
-        body: surfSummary
-    };
-    console.log('response: ' + JSON.stringify(response));
+    const summaryRequests = await Promise.all([
+        getSummary('Bondi', bondiSpotId),
+        getSummary('Tamarama', tamaramaSpotId),
+        getSummary('Bronte', bronteSpotId)
+    ]);
+
+    const surfSummary = summaryRequests.join('\n');
+    send(surfSummary);
+
+    const response = { statusCode: 200, body: surfSummary };
+
+    console.log('response: ', response);
     return response;
 };
