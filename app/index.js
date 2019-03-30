@@ -11,12 +11,9 @@ exports.handler = async () => {
         getSummary('Tamarama', tamaramaSpotId),
         getSummary('Bronte', bronteSpotId)
     ]);
-
-    const surfSummary = summaryRequests.join('\n');
-    send(surfSummary);
-
-    const response = { statusCode: 200, body: surfSummary };
-
+    const response = { statusCode: 200, body: summaryRequests };
     console.log('response: ', response);
+
+    summaryRequests.forEach(element => send(element));
     return response;
 };
