@@ -7,6 +7,7 @@ pipelines:
         caches:
           - node
         script:
+          - cd app
           - npm install
           - npm test
   branches:
@@ -17,6 +18,7 @@ pipelines:
           caches:
             - node
           script:
+            - cd app
             - npm install
             - npm test
             - apt-get update

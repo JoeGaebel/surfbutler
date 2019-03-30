@@ -1,8 +1,12 @@
 <template>
     <div id="app">
         <div class="panel">
-            <div class="header">Surf Butler</div>
-            <div class="sub-title">Surfs Up!</div>
+            <div class="header">
+                Surf Butler
+            </div>
+            <div class="sub-title">
+                Surfs Up!
+            </div>
             <div class="description">
                 Want to know when your beach is pumping? Get a text straight to your phone with
                 Surf Bulter.
@@ -13,68 +17,151 @@
             <div class="form">
                 <div class="checkboxes columns">
                     <div class="column">
-                        <label for="bondi" class="checkbox">
-                            <input type="checkbox" id="bondi" name="bondi" class="checkbox">
+                        <label
+                            for="bondi"
+                            class="checkbox"
+                        >
+                            <input
+                                id="bondi"
+                                v-model="beaches"
+                                value="bondi"
+                                type="checkbox"
+                                class="checkbox"
+                            >
                             Bondi
                         </label>
 
-                        <label for="tamarama" class="checkbox">
-                            <input type="checkbox" id="tamarama" name="tamarama" class="checkbox">
+                        <label
+                            for="tamarama"
+                            class="checkbox"
+                        >
+                            <input
+                                id="tamarama"
+                                v-model="beaches"
+                                type="checkbox"
+                                value="tamarama"
+                                class="checkbox"
+                            >
                             Tamarama
                         </label>
 
-                        <label for="bronte" class="checkbox">
-                            <input type="checkbox" id="bronte" name="bronte" class="checkbox">
+                        <label
+                            for="bronte"
+                            class="checkbox"
+                        >
+                            <input
+                                id="bronte"
+                                v-model="beaches"
+                                type="checkbox"
+                                value="bronte"
+                                class="checkbox"
+                            >
                             Bronte
                         </label>
 
-                        <label for="cronulla" class="checkbox">
-                            <input type="checkbox" id="cronulla" name="cronulla" class="checkbox">
+                        <label
+                            for="cronulla"
+                            class="checkbox"
+                        >
+                            <input
+                                id="cronulla"
+                                v-model="beaches"
+                                type="checkbox"
+                                value="cronulla"
+                                class="checkbox"
+                            >
                             Cronulla
                         </label>
                     </div>
 
                     <div class="column">
-                        <label for="curl-curl" class="checkbox">
-                            <input type="checkbox" id="curl-curl" name="curl-curl" class="checkbox">
+                        <label
+                            for="curl-curl"
+                            class="checkbox"
+                        >
+                            <input
+                                id="curl-curl"
+                                v-model="beaches"
+                                type="checkbox"
+                                value="curl-curl"
+                                class="checkbox"
+                            >
                             Curl Curl
                         </label>
 
-                        <label for="freshwater" class="checkbox">
-                            <input type="checkbox" id="freshwater" name="freshwater" class="checkbox">
+                        <label
+                            for="freshwater"
+                            class="checkbox"
+                        >
+                            <input
+                                id="freshwater"
+                                v-model="beaches"
+                                type="checkbox"
+                                value="freshwater"
+                                class="checkbox"
+                            >
                             Freshwater
                         </label>
 
-                        <label for="manly" class="checkbox">
-                            <input type="checkbox" id="manly" name="manly" class="checkbox">
+                        <label
+                            for="manly"
+                            class="checkbox"
+                        >
+                            <input
+                                id="manly"
+                                v-model="beaches"
+                                type="checkbox"
+                                value="manly"
+                                class="checkbox"
+                            >
                             Manly
                         </label>
                     </div>
                 </div>
-                <VuePhoneNumberInput dark required default-country-code="AU" v-model="mobile"/>
-                <button class="button is-link">Let's go!</button>
+                <VuePhoneNumberInput
+                    v-model="mobile"
+                    dark
+                    required
+                    default-country-code="AU"
+                />
+                <button
+                    class="button is-link"
+                    @click="submit"
+                >
+                    Let's go!
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import './../node_modules/bulma/css/bulma.css';
-    import 'vue-phone-number-input/dist/vue-phone-number-input.css';
-    import Vue from 'vue'
+import Vue from 'vue';
+import axios from 'axios';
+import VuePhoneNumberInput from 'vue-phone-number-input';
 
-    import VuePhoneNumberInput from 'vue-phone-number-input';
-    Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+const apiUrl = 'https://5h7fqfsyik.execute-api.ap-southeast-2.amazonaws.com/default/surf-butler-landing-page-data-parser';
 
-    export default {
-        name: 'app',
-        data: () => ({
-            mobile: ''
-        }),
-        components: {
-            VuePhoneNumberInput
-        }
-    };
+Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+
+export default {
+    name: 'App',
+    components: {
+        VuePhoneNumberInput,
+    },
+    data: () => ({
+        mobile: '',
+        beaches: [],
+    }),
+    methods: {
+        submit() {
+            axios.post(apiUrl, {
+                phoneNumber: this.mobile.replace(/ /g, ''),
+                beaches: this.beaches,
+            }, { 'content-type': 'application/json' });
+        },
+    },
+};
 </script>
 
 <style>
@@ -134,11 +221,11 @@
     }
 
     .checkbox:hover {
-        color: cornflowerblue;
+        color: cornflowerblue !important;
     }
 
     html {
-        background-color: unset;
+        background-color: unset !important;
     }
 
     @media (max-width: 384px) {
