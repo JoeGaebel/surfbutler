@@ -6,7 +6,7 @@ exports.handler = async () => {
     const surfSummary = await surfDataService.getSummary('Bondi', spotIdBondi);
     messageService.send(surfSummary);
 
-    let response = {
+    const response = {
         statusCode: 200,
         body: surfSummary
     };

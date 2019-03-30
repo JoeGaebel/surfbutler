@@ -4,7 +4,8 @@
   "description": "Get notified about the best beach to surf at.",
   "main": "index.js",
   "scripts": {
-    "test": "eslint app tests --fix && jest"
+    "test": "eslint . --fix && jest",
+    "lint": "eslint . --fix"
   },
   "repository": {
     "type": "git",

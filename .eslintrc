@@ -5,7 +5,8 @@
     "object-curly-spacing": ["error", "always"],
     "template-curly-spacing": ["error", "always"],
     "quotes": ["error", "single"],
-    "no-console": ["off", "always"]
+    "no-console": ["off", "always"],
+    "prefer-const": ["error"]
   },
   "parserOptions": {
     "ecmaVersion": 2017
