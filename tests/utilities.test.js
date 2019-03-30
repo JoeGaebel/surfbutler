@@ -1,7 +1,9 @@
 jest.mock('../app/utilities/clock');
 const getCurrentTimestamp = require('../app/utilities/clock').getCurrentTimestamp;
 const getClosestTimeEntry = require('../app/utilities/timeEntry').getClosest;
-const compassToDirection = require('../app/utilities/compass').toDirection;
+const convertDirection = require('../app/utilities/emojiConverter').convertDirection;
+const convertWeather = require('../app/utilities/emojiConverter').convertWeather;
+const toFirstWordUppercase = require('../app/utilities/stringUtils').toFirstWordUppercase;
 
 describe('getClosestTimeEntry', () => {
     const currentTime = 1552068000;
@@ -23,21 +25,55 @@ describe('getClosestTimeEntry', () => {
 
 describe('compassDegreesToDirection', () => {
     it('Test for N', () => {
-        expect(compassToDirection(0)).toEqual('N');
-        expect(compassToDirection(10)).toEqual('N');
-        expect(compassToDirection(350)).toEqual('N');
-        expect(compassToDirection(360)).toEqual('N');
+        expect(convertDirection(0)).toEqual('⬇️');
+        expect(convertDirection(10)).toEqual('⬇️');
+        expect(convertDirection(350)).toEqual('⬇️');
+        expect(convertDirection(360)).toEqual('⬇️');
     });
     it('Test for S', () => {
-        expect(compassToDirection(170)).toEqual('S');
-        expect(compassToDirection(191)).toEqual('S');
+        expect(convertDirection(170)).toEqual('⬆️');
+        expect(convertDirection(191)).toEqual('⬆️');
     });
     it('Test for W', () => {
-        expect(compassToDirection(260)).toEqual('W');
-        expect(compassToDirection(280)).toEqual('W');
+        expect(convertDirection(260)).toEqual('➡️');
+        expect(convertDirection(280)).toEqual('➡️');
     });
     it('Test for E', () => {
-        expect(compassToDirection(80)).toEqual('E');
-        expect(compassToDirection(100)).toEqual('E');
+        expect(convertDirection(80)).toEqual('⬅️');
+        expect(convertDirection(100)).toEqual('⬅️');
+    });
+    it('Test invalid value', () => {
+        expect(convertDirection(400)).toEqual(400);
+        expect(convertDirection('Text')).toEqual('Text');
+    });
+});
+
+describe('convertWeather', () => {
+    it('Test sun', () => {
+        expect(convertWeather('CLEAR_NO_RAIN')).toEqual('☀️');
+    });
+    it('Test rain', () => {
+        expect(convertWeather('CLEAR_RAIN')).toEqual('🌧');
+        expect(convertWeather('OVERCAST_RAIN')).toEqual('🌧');
+    });
+    it('Test night', () => {
+        expect(convertWeather('NIGHT_PARTLY_CLOUDY_NO_RAIN')).toEqual('✨');
+        expect(convertWeather('NIGHT_PARTLY_CLOUDY_RAIN')).toEqual('✨');
+        expect(convertWeather('NIGHT_OVERCAST_RAIN')).toEqual('✨');
+    });
+    it('Test invalid value', () => {
+        expect(convertWeather(400)).toEqual(400);
+        expect(convertWeather('Text')).toEqual('Text');
+    });
+});
+
+describe('stringUtils', () => {
+    it('toFirstWordUppercase', () => {
+        expect(toFirstWordUppercase('HELLO WORLD')).toEqual('Hello world');
+        expect(toFirstWordUppercase('hello world')).toEqual('Hello world');
+        expect(toFirstWordUppercase('Hello world')).toEqual('Hello world');
+        expect(toFirstWordUppercase('Hello world!')).toEqual('Hello world!');
+        expect(toFirstWordUppercase('1234')).toEqual('1234');
+        expect(toFirstWordUppercase('!?')).toEqual('!?');
     });
 });

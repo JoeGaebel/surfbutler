@@ -1,6 +1,7 @@
 const axios = require('axios');
 const getClosestTimeEntry = require('./utilities/timeEntry').getClosest;
-const compassToDirection = require('./utilities/compass').toDirection;
+const toFirstWordUppercase = require('./utilities/stringUtils').toFirstWordUppercase;
+const emojiConverter = require('./utilities/emojiConverter');
 
 exports.getSummary = async (spotName, spotId) => {
     const values = await Promise.all([
@@ -10,8 +11,8 @@ exports.getSummary = async (spotName, spotId) => {
         getWeatherSummary(spotId),
         getWindSummary(spotId)
     ]);
-
-    return `The surf report for ${ spotName } currently is: \n${ values.join('\n') }`;
+    const [swells, waves, tide, weather, wind] = values;
+    return `${ spotName }, ${ weather }\n${ tide }, ${ waves }, ${ wind }\nSwells:${ swells }`;
 };
 
 const getSwellSummary = async (spotId) => {
@@ -23,10 +24,10 @@ const getSwellSummary = async (spotId) => {
     swells.forEach(swell => {
         const height = swell.height;
         const period = swell.period;
-        const direction = compassToDirection(swell.direction);
+        const direction = emojiConverter.convertDirection(swell.direction);
 
         if (height > 0 && period > 0) {
-            swellsText += `\nSwell: ${ height }m @ ${ period }s from ${ direction }`;
+            swellsText += `\n${ direction } ${ height }m, ${ period }s`;
         }
     });
 
@@ -37,14 +38,14 @@ const getWaveHeightSummary = async (spotId) => {
     const waveHeightUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=1&intervalHours=4&maxHeights=true`;
     const waveHeightResponse = await queryEndpoint(waveHeightUrl);
     const maxHeight = getClosestTimeEntry(waveHeightResponse.wave).surf.max;
-    return `Wave height: ${ maxHeight }m`;
+    return `${ maxHeight }m waves`;
 };
 
 const getTideSummary = async (spotId) => {
     const tideUrl = `http://services.surfline.com/kbyg/spots/forecasts/tides?spotId=${ spotId }&days=1`;
     const tideResponse = await queryEndpoint(tideUrl);
-    const { type, height } = getClosestTimeEntry(tideResponse.tides);
-    return `Tide: ${ type } (${ height }m)`;
+    const { type } = getClosestTimeEntry(tideResponse.tides);
+    return `${ toFirstWordUppercase(type) } tide`;
 };
 
 const getWeatherSummary = async (spotId) => {
@@ -55,10 +56,10 @@ const getWeatherSummary = async (spotId) => {
         timeZone: 'Australia/Sydney',
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true
+        hour12: false
     });
     const { temperature, condition } = getClosestTimeEntry(weatherResponse.weather);
-    return `Sunrise: ${ sunrise }\nWeather: ${ temperature }ºC ${ condition }`;
+    return `${ parseInt(temperature) }º ${ emojiConverter.convertWeather(condition) }, Sunrise ${ sunrise }`;
 };
 
 const getWindSummary = async (spotId) => {
@@ -66,7 +67,7 @@ const getWindSummary = async (spotId) => {
     const windResponse = await queryEndpoint(windUrl);
 
     const { direction, speed } = getClosestTimeEntry(windResponse.wind);
-    return `Wind: ${ compassToDirection(direction) } (${ speed }kts)`;
+    return `${ emojiConverter.convertDirection(direction) }  wind at ${ parseInt(speed) }kts`;
 };
 
 const queryEndpoint = (url) => axios.get(url)
