@@ -1,9 +1,9 @@
-const { handler } = require('../app/index');
-const { getSummary } = require('../app/surfDataService');
-const { send } = require('../app/messageService');
+const { handler } = require('../index');
+const { getSummary } = require('../surfDataService');
+const { send } = require('../messageService');
 
-jest.mock('../app/messageService');
-jest.mock('../app/surfDataService');
+jest.mock('../messageService');
+jest.mock('../surfDataService');
 
 describe('handler', () => {
     beforeEach(() => {

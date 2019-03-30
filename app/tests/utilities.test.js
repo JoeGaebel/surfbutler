@@ -1,9 +1,9 @@
-jest.mock('../app/utilities/clock');
-const getCurrentTimestamp = require('../app/utilities/clock').getCurrentTimestamp;
-const getClosestTimeEntry = require('../app/utilities/timeEntry').getClosest;
-const convertDirection = require('../app/utilities/emojiConverter').convertDirection;
-const convertWeather = require('../app/utilities/emojiConverter').convertWeather;
-const toFirstWordUppercase = require('../app/utilities/stringUtils').toFirstWordUppercase;
+jest.mock('../utilities/clock');
+const getCurrentTimestamp = require('../utilities/clock').getCurrentTimestamp;
+const getClosestTimeEntry = require('../utilities/timeEntry').getClosest;
+const convertDirection = require('../utilities/emojiConverter').convertDirection;
+const convertWeather = require('../utilities/emojiConverter').convertWeather;
+const toFirstWordUppercase = require('../utilities/stringUtils').toFirstWordUppercase;
 
 describe('getClosestTimeEntry', () => {
     const currentTime = 1552068000;

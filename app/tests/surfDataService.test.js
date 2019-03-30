@@ -1,4 +1,4 @@
-const { getSummary } = require('../app/surfDataService');
+const { getSummary } = require('../surfDataService');
 
 describe('getSummary', () => {
     beforeEach(() => {
