@@ -8,7 +8,7 @@
                 Surf's Up!
             </div>
             <div class="description">
-                Want to know when your beach is pumping?
+                Want to know when your beaches are pumping?
                 Get a text the night before from Surf Bulter.
             </div>
             <div class="call-to-action">
@@ -18,105 +18,38 @@
             <div class="form">
                 <div class="checkboxes columns is-mobile">
                     <div class="column">
-                        <label
-                            for="bondi"
-                            class="checkbox"
-                        >
-                            <input
-                                id="bondi"
-                                v-model="beaches"
-                                value="bondi"
-                                type="checkbox"
-                                class="checkbox"
-                            >
-                            Bondi
-                        </label>
-
-                        <label
-                            for="tamarama"
-                            class="checkbox"
-                        >
-                            <input
-                                id="tamarama"
-                                v-model="beaches"
-                                type="checkbox"
-                                value="tamarama"
-                                class="checkbox"
-                            >
-                            Tamarama
-                        </label>
-
-                        <label
-                            for="bronte"
-                            class="checkbox"
-                        >
-                            <input
-                                id="bronte"
-                                v-model="beaches"
-                                type="checkbox"
-                                value="bronte"
-                                class="checkbox"
-                            >
-                            Bronte
-                        </label>
-
-                        <label
-                            for="cronulla"
-                            class="checkbox"
-                        >
-                            <input
-                                id="cronulla"
-                                v-model="beaches"
-                                type="checkbox"
-                                value="cronulla"
-                                class="checkbox"
-                            >
-                            Cronulla
-                        </label>
+                        <BeachBox
+                            v-model="beaches"
+                            name="bondi"
+                        />
+                        <BeachBox
+                            v-model="beaches"
+                            name="tamarama"
+                        />
+                        <BeachBox
+                            v-model="beaches"
+                            name="bronte"
+                        />
+                        <BeachBox
+                            v-model="beaches"
+                            name="cronulla"
+                        />
                     </div>
 
                     <div class="column">
-                        <label
-                            for="curl-curl"
-                            class="checkbox"
-                        >
-                            <input
-                                id="curl-curl"
-                                v-model="beaches"
-                                type="checkbox"
-                                value="curl-curl"
-                                class="checkbox"
-                            >
-                            Curl Curl
-                        </label>
-
-                        <label
-                            for="freshwater"
-                            class="checkbox"
-                        >
-                            <input
-                                id="freshwater"
-                                v-model="beaches"
-                                type="checkbox"
-                                value="freshwater"
-                                class="checkbox"
-                            >
-                            Freshwater
-                        </label>
-
-                        <label
-                            for="manly"
-                            class="checkbox"
-                        >
-                            <input
-                                id="manly"
-                                v-model="beaches"
-                                type="checkbox"
-                                value="manly"
-                                class="checkbox"
-                            >
-                            Manly
-                        </label>
+                        <BeachBox
+                            v-model="beaches"
+                            name="curl-curl"
+                            display-name="Curl Curl"
+                        />
+                        <BeachBox
+                            v-model="beaches"
+                            name="freshwater"
+                        />
+                        <BeachBox
+                            v-model="beaches"
+                            name="manly"
+                        />
                     </div>
                 </div>
                 <VuePhoneNumberInput
@@ -140,6 +73,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import VuePhoneNumberInput from 'vue-phone-number-input';
+import BeachBox from './components/BeachBox.vue';
 
 const apiUrl = 'https://5h7fqfsyik.execute-api.ap-southeast-2.amazonaws.com/default/surf-butler-landing-page-data-parser';
 Vue.component('vue-phone-number-input', VuePhoneNumberInput);
@@ -147,15 +81,29 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 export default {
     name: 'App',
     components: {
+        BeachBox,
         VuePhoneNumberInput,
     },
     data: () => ({
         mobile: '',
-        beaches: [],
+        beaches: {
+            bondi: false,
+            tamarama: false,
+            bronte: false,
+            cronulla: false,
+            curlcurl: false,
+            freshwater: false,
+            manly: false,
+        },
     }),
     methods: {
         submit() {
-            axios.post(apiUrl, { phoneNumber: this.mobile.replace(/ /g, ''), beaches: this.beaches });
+            const beachList = Object.keys(this.beaches).reduce((list, curr) => {
+                if (this.beaches[curr]) list.push(curr);
+                return list;
+            }, []);
+
+            axios.post(apiUrl, { phoneNumber: this.mobile.replace(/ /g, ''), beaches: beachList });
         },
     },
 };
@@ -226,6 +174,7 @@ export default {
             font-size: 73px !important;
             margin-bottom: 0 !important;
         }
+
         .panel {
             width: 340px !important;
             padding: 20px !important;
