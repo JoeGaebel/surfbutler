@@ -59,17 +59,23 @@
                     default-country-code="AU"
                 />
                 <button
-                    v-if="!isDone"
+                    v-if="!isStarted"
                     class="button is-link"
                     @click="submit"
                 >
                     Let's go!
                 </button>
                 <div
-                    v-if="isDone"
-                    class="success-message"
+                    v-if="isSuccess"
+                    class="alert success-alert"
                 >
                     Success 🤙
+                </div>
+                <div
+                    v-if="isError"
+                    class="alert error-alert"
+                >
+                    Error - Sorry something went wrong, please try again later
                 </div>
             </div>
         </div>
@@ -93,7 +99,9 @@ export default {
     },
     data: () => ({
         mobile: '',
-        isDone: false,
+        isStarted: false,
+        isSuccess: false,
+        isError: false,
         beaches: {
             bondi: false,
             tamarama: false,
@@ -111,8 +119,12 @@ export default {
                 return list;
             }, []);
 
-            axios.post(apiUrl, { phoneNumber: this.mobile.replace(/ /g, ''), beaches: beachList }).finally(() => {
-                this.isDone = true;
+            this.isStarted = true;
+
+            axios.post(apiUrl, { phoneNumber: this.mobile.replace(/ /g, ''), beaches: beachList }).then(() => {
+                this.isSuccess = true;
+            }).catch(() => {
+                this.isError = true;
             });
         },
     },
@@ -215,14 +227,18 @@ export default {
         font-family: 'Lily Script One', cursive;
     }
 
-    .success-message {
-        background-color: #31CF65;
+    .alert {
         padding: calc(0.375em - 1px) 0.75em;
         text-align: center;
-        white-space: nowrap;
         border-radius: 4px;
         user-select: none;
     }
 
+    .success-alert {
+        background-color: #31CF65;
+    }
 
+    .error-alert {
+        background-color: #ff3860;
+    }
 </style>
