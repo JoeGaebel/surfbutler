@@ -72,7 +72,7 @@ pipelines:
           AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
           AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
           AWS_DEFAULT_REGION: $AWS_REGION
-          S3_BUCKET: "surfbutler"
+          S3_BUCKET: "www.surfbutler.io"
           LOCAL_PATH: "landing-page/dist"
           ACL: "public-read"
           CACHE_CONTROL: "max-age=3600"
