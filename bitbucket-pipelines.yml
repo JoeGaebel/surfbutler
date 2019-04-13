@@ -13,6 +13,19 @@ pipelines:
             - npm test
 
       - step:
+          name: Build and Test Frontend
+          caches:
+          - node
+          script:
+          - cd landing-page
+          - yarn install
+          - yarn test
+          - yarn build
+          artifacts:
+          - landing-page/dist/**
+
+    - parallel:
+      - step:
           name: Deploy API to Staging
           deployment: staging
           branches:
@@ -50,34 +63,20 @@ pipelines:
               ALIAS: 'staging'
               VERSION: '${function_version}'
 
-
-    - parallel:
       - step:
-          name: Build and Test Frontend
-          caches:
-          - node
+          name: Deploy Frontend
+          branches:
+          - master
           script:
-          - cd landing-page
-          - yarn install
-          - yarn test
-          - yarn build
-          artifacts:
-          - landing-page/dist/**
-
-      - step:
-            name: Deploy Frontend
-            branches:
-            - master
-            script:
-            - pipe: atlassian/aws-s3-deploy:0.2.1
-              variables:
-                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-                AWS_DEFAULT_REGION: $AWS_REGION
-                S3_BUCKET: "surfbutler"
-                LOCAL_PATH: "landing-page/dist"
-                ACL: "public-read"
-                CACHE_CONTROL: "max-age=3600"
-                EXPIRES: "2018-10-01T00:00:00+00:00"
-                DELETE_FLAG: "true"
-                EXTRA_ARGS: "--follow-symlinks"
+          - pipe: atlassian/aws-s3-deploy:0.2.1
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_REGION
+              S3_BUCKET: "surfbutler"
+              LOCAL_PATH: "landing-page/dist"
+              ACL: "public-read"
+              CACHE_CONTROL: "max-age=3600"
+              EXPIRES: "2018-10-01T00:00:00+00:00"
+              DELETE_FLAG: "true"
+              EXTRA_ARGS: "--follow-symlinks"
