@@ -22,45 +22,48 @@ pipelines:
         artifacts:
         - landing-page/dist/**
 
-  branches:
-    master:
-      - step:
-          name: Deploy API to Staging
-          deployment: staging
-          caches:
-            - node
-          script:
-            - cd app
-            - npm install
-            - npm test
-            - apt-get update
-            - apt-get --assume-yes install zip
-            - zip -r surfbutler.zip app node_modules
-            # Update lambda code and publish a new version
-            - pipe: atlassian/aws-lambda-deploy:0.2.1
-              variables:
-                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-                AWS_DEFAULT_REGION: $AWS_REGION
-                FUNCTION_NAME: $AWS_FUNCTION_NAME
-                COMMAND: 'update'
-                ZIP_FILE: 'surfbutler.zip'
+    - step:
+        name: Deploy API to Staging
+        deployment: staging
+        branches:
+          - master
+        caches:
+          - node
+        script:
+          - cd app
+          - npm install
+          - npm test
+          - apt-get update
+          - apt-get --assume-yes install zip
+          - zip -r surfbutler.zip app node_modules
+          # Update lambda code and publish a new version
+          - pipe: atlassian/aws-lambda-deploy:0.2.1
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_REGION
+              FUNCTION_NAME: $AWS_FUNCTION_NAME
+              COMMAND: 'update'
+              ZIP_FILE: 'surfbutler.zip'
 
-            # Read results from the update pipe into environment variables
-            - source pipe.meta.env
+          # Read results from the update pipe into environment variables
+          - source pipe.meta.env
 
-            # Point an alias to the new lambda version
-            - pipe: atlassian/aws-lambda-deploy:0.2.1
-              variables:
-                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-                AWS_DEFAULT_REGION: $AWS_REGION
-                FUNCTION_NAME: $AWS_FUNCTION_NAME
-                COMMAND: 'alias'
-                ALIAS: 'staging'
-                VERSION: '${function_version}'
-      - step:
+          # Point an alias to the new lambda version
+          - pipe: atlassian/aws-lambda-deploy:0.2.1
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_REGION
+              FUNCTION_NAME: $AWS_FUNCTION_NAME
+              COMMAND: 'alias'
+              ALIAS: 'staging'
+              VERSION: '${function_version}'
+
+    - step:
           name: Deploy Frontend
+          branches:
+          - master
           script:
           - pipe: atlassian/aws-s3-deploy:0.2.1
             variables:
