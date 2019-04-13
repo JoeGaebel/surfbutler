@@ -59,11 +59,18 @@
                     default-country-code="AU"
                 />
                 <button
+                    v-if="!isDone"
                     class="button is-link"
                     @click="submit"
                 >
                     Let's go!
                 </button>
+                <div
+                    v-if="isDone"
+                    class="success-message"
+                >
+                    Success 🤙
+                </div>
             </div>
         </div>
     </div>
@@ -75,7 +82,7 @@ import axios from 'axios';
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import BeachBox from './components/BeachBox.vue';
 
-const apiUrl = 'https://5h7fqfsyik.execute-api.ap-southeast-2.amazonaws.com/default/surf-butler-landing-page-data-parser';
+const apiUrl = 'https://5h7fqfsyik.execute-api.ap-southeast-2.amazonaws.com/default/surfbutler-landingpage-backend';
 Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 
 export default {
@@ -86,6 +93,7 @@ export default {
     },
     data: () => ({
         mobile: '',
+        isDone: false,
         beaches: {
             bondi: false,
             tamarama: false,
@@ -103,7 +111,9 @@ export default {
                 return list;
             }, []);
 
-            axios.post(apiUrl, { phoneNumber: this.mobile.replace(/ /g, ''), beaches: beachList });
+            axios.post(apiUrl, { phoneNumber: this.mobile.replace(/ /g, ''), beaches: beachList }).finally(() => {
+                this.isDone = true;
+            });
         },
     },
 };
@@ -204,4 +214,15 @@ export default {
         margin-bottom: 25px;
         font-family: 'Lily Script One', cursive;
     }
+
+    .success-message {
+        background-color: #31CF65;
+        padding: calc(0.375em - 1px) 0.75em;
+        text-align: center;
+        white-space: nowrap;
+        border-radius: 4px;
+        user-select: none;
+    }
+
+
 </style>

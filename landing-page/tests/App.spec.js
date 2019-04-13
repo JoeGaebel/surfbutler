@@ -2,7 +2,9 @@ import { mount } from '@vue/test-utils';
 import axios from 'axios';
 import App from '../src/App.vue';
 
-jest.mock('axios');
+jest.mock('axios', () => ({
+    post: jest.fn(() => Promise.resolve()),
+}));
 
 describe('App', () => {
     it('saves the phone number and beaches when clicking the button', () => {
@@ -23,7 +25,7 @@ describe('App', () => {
         wrapper.find('button').trigger('click');
 
         expect(axios.post).toHaveBeenCalledWith(
-            'https://5h7fqfsyik.execute-api.ap-southeast-2.amazonaws.com/default/surf-butler-landing-page-data-parser',
+            'https://5h7fqfsyik.execute-api.ap-southeast-2.amazonaws.com/default/surfbutler-landingpage-backend',
             { phoneNumber: '0439363614', beaches: ['bondi', 'bronte'] },
         );
     });
