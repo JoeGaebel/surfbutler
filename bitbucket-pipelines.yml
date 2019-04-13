@@ -2,7 +2,7 @@ image: node
 
 pipelines:
   default:
-    - parallel
+    - parallel:
       - step:
           name: Build and Test API
           caches:
@@ -51,7 +51,7 @@ pipelines:
               VERSION: '${function_version}'
 
 
-    - parallel
+    - parallel:
       - step:
           name: Build and Test Frontend
           caches:
