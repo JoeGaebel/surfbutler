@@ -10,7 +10,6 @@ pipelines:
           - cd app
           - npm install
           - npm test
-
     - step:
         name: Build and Test Frontend
         caches:
@@ -60,7 +59,6 @@ pipelines:
                 COMMAND: 'alias'
                 ALIAS: 'staging'
                 VERSION: '${function_version}'
-
       - step:
           name: Deploy Frontend
           script:
