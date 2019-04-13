@@ -13,7 +13,7 @@
             </div>
             <div class="call-to-action">
                 Pick your favourite beaches and enter your mobile
-                number to receive free updates
+                number to receive free updates!
             </div>
             <div class="form">
                 <div class="checkboxes columns is-mobile">
