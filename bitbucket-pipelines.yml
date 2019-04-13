@@ -50,11 +50,13 @@ pipelines:
 
       - step:
           name: Build and Test Frontend
+          caches:
+          - node
           script:
           - cd landing-page
           - yarn install
           - yarn test
-          - yarn build dist
+          - yarn build
           artifacts:
           - landing-page/dist/**
 
