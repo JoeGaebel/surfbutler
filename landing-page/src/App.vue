@@ -118,7 +118,7 @@ export default {
     }
 
     #app {
-        height: 100vh;
+        height: 98vh;
         color: white;
         display: flex;
         align-items: center;
@@ -161,10 +161,6 @@ export default {
         margin-left: 10px;
     }
 
-    .checkbox:hover {
-        color: cornflowerblue !important;
-    }
-
     html {
         background-color: unset !important;
     }
@@ -193,10 +189,6 @@ export default {
         .sub-title {
             font-size: 34px;
         }
-    }
-
-    label.checkbox {
-        margin-right: 10px;
     }
 
     /*noinspection CssUnusedSymbol*/

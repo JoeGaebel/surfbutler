@@ -28,4 +28,12 @@ export default {
     label {
         text-transform: capitalize;
     }
+
+    .checkbox:hover {
+        color: cornflowerblue !important;
+    }
+
+    label.checkbox {
+        margin-right: 10px;
+    }
 </style>

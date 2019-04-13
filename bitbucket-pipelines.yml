@@ -10,6 +10,19 @@ pipelines:
           - cd app
           - npm install
           - npm test
+
+    - step:
+        name: Build and Test Frontend
+        caches:
+        - node
+        script:
+        - cd landing-page
+        - yarn install
+        - yarn test
+        - yarn build
+        artifacts:
+        - landing-page/dist/**
+
   branches:
     master:
       - step:
@@ -47,18 +60,6 @@ pipelines:
                 COMMAND: 'alias'
                 ALIAS: 'staging'
                 VERSION: '${function_version}'
-
-      - step:
-          name: Build and Test Frontend
-          caches:
-          - node
-          script:
-          - cd landing-page
-          - yarn install
-          - yarn test
-          - yarn build
-          artifacts:
-          - landing-page/dist/**
 
       - step:
           name: Deploy Frontend
