@@ -1,21 +1,22 @@
 <template>
     <div id="app">
+        <div class="header">
+            Surf Butler
+        </div>
         <div class="panel">
-            <div class="header">
-                Surf Butler
-            </div>
             <div class="sub-title">
-                Surfs Up!
+                Surf's Up!
             </div>
             <div class="description">
-                Want to know when your beach is pumping? Get a text straight to your phone with
-                Surf Bulter.
+                Want to know when your beach is pumping?
+                Get a text the night before from Surf Bulter.
             </div>
             <div class="call-to-action">
-                Enter your mobile number to receive text messages for your favourite beach!
+                Pick your favourite beaches and enter your mobile
+                number to receive free updates!
             </div>
             <div class="form">
-                <div class="checkboxes columns">
+                <div class="checkboxes columns is-mobile">
                     <div class="column">
                         <label
                             for="bondi"
@@ -141,7 +142,6 @@ import axios from 'axios';
 import VuePhoneNumberInput from 'vue-phone-number-input';
 
 const apiUrl = 'https://5h7fqfsyik.execute-api.ap-southeast-2.amazonaws.com/default/surf-butler-landing-page-data-parser';
-
 Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 
 export default {
@@ -155,10 +155,7 @@ export default {
     }),
     methods: {
         submit() {
-            axios.post(apiUrl, {
-                phoneNumber: this.mobile.replace(/ /g, ''),
-                beaches: this.beaches,
-            }, { 'content-type': 'application/json' });
+            axios.post(apiUrl, { phoneNumber: this.mobile.replace(/ /g, ''), beaches: this.beaches });
         },
     },
 };
@@ -169,29 +166,24 @@ export default {
         padding: 10px;
         background-position-x: 79%;
         background-size: auto;
-        background: transparent url('./assets/background.jpg') no-repeat fixed 79% 0;
+        background: url('./assets/background.jpg') no-repeat fixed 79% 0;
     }
 
     #app {
-        height: 97vh;
+        height: 100vh;
         color: white;
         display: flex;
         align-items: center;
-        justify-content: center;
         font-family: "Montserrat", sans-serif;
+        flex-direction: column;
     }
 
     .panel {
         padding: 40px;
-        border-radius: 4px;
+        border-radius: 15px;
         background-color: black;
         width: 380px;
-    }
-
-    .header {
-        font-size: 21px;
-        color: #656565;
-        margin-bottom: 0;
+        margin-bottom: 30px;
     }
 
     .sub-title {
@@ -203,16 +195,17 @@ export default {
     .description {
         color: #656565;
         font-size: 21px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
 
     .call-to-action {
         font-size: 14px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
     .form {
         display: flex;
+        margin-bottom: 1px;
         flex-direction: column;
     }
 
@@ -228,9 +221,28 @@ export default {
         background-color: unset !important;
     }
 
-    @media (max-width: 384px) {
-        #app {
-            height: unset;
+    @media (max-width: 375px) {
+        .header {
+            font-size: 73px !important;
+            margin-bottom: 0 !important;
+        }
+        .panel {
+            width: 340px !important;
+            padding: 20px !important;
+        }
+    }
+
+    @media (max-width: 320px) {
+        .header {
+            font-size: 57px !important;
+        }
+
+        .panel {
+            width: 300px !important;
+        }
+
+        .sub-title {
+            font-size: 34px;
         }
     }
 
@@ -241,5 +253,14 @@ export default {
     /*noinspection CssUnusedSymbol*/
     .vue-phone-number-input {
         margin-bottom: 20px;
+    }
+
+    .header {
+        color: white;
+        font-size: 76px;
+        align-self: center;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-family: 'Lily Script One', cursive;
     }
 </style>
