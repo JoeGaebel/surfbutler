@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 
 AWS.config.update({ region: 'ap-southeast-2' });
-const phoneNumbers = ['+61468921570'];
+const phoneNumbers = ['+61439363614', '+61468921570'];
 
 exports.send = (message) => {
     phoneNumbers.forEach((phoneNumber) => {
