@@ -8,7 +8,7 @@ pipelines:
         caches:
         - node
         script:
-        - cd app
+        - cd messaging-service
         - npm install
         - npm test
 
@@ -32,12 +32,12 @@ pipelines:
       caches:
       - node
       script:
-      - cd app
+      - cd messaging-service
       - npm install
       - npm test
       - apt-get update
       - apt-get --assume-yes install zip
-      - zip -r surfbutler.zip app node_modules
+      - zip -r surfbutler.zip .
       # Update lambda code and publish a new version
       - pipe: atlassian/aws-lambda-deploy:0.2.1
         variables:
