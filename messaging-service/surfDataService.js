@@ -1,5 +1,5 @@
 const axios = require('axios');
-const getClosestTimeEntry = require('./utilities/timeEntry').getClosest;
+const getTomorrowsEntry = require('./utilities/timeEntry').getTomorrowMorningsEntry;
 const toFirstWordUppercase = require('./utilities/stringUtils').toFirstWordUppercase;
 const emojiConverter = require('./utilities/emojiConverter');
 
@@ -16,9 +16,9 @@ exports.getSummary = async (spotName, spotId) => {
 };
 
 const getSwellSummary = async (spotId) => {
-    const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=1&intervalHours=4&maxHeights=false`;
+    const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=2&intervalHours=4&maxHeights=false`;
     const swellResponse = await queryEndpoint(swellUrl);
-    const swells = getClosestTimeEntry(swellResponse.wave).swells;
+    const swells = getTomorrowsEntry(swellResponse.wave).swells;
 
     let swellsText = '';
     swells.forEach(swell => {
@@ -35,21 +35,21 @@ const getSwellSummary = async (spotId) => {
 };
 
 const getWaveHeightSummary = async (spotId) => {
-    const waveHeightUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=1&intervalHours=4&maxHeights=true`;
+    const waveHeightUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=2&intervalHours=4&maxHeights=true`;
     const waveHeightResponse = await queryEndpoint(waveHeightUrl);
-    const maxHeight = getClosestTimeEntry(waveHeightResponse.wave).surf.max;
+    const maxHeight = getTomorrowsEntry(waveHeightResponse.wave).surf.max;
     return `${ maxHeight }m waves`;
 };
 
 const getTideSummary = async (spotId) => {
-    const tideUrl = `http://services.surfline.com/kbyg/spots/forecasts/tides?spotId=${ spotId }&days=1`;
+    const tideUrl = `http://services.surfline.com/kbyg/spots/forecasts/tides?spotId=${ spotId }&days=2`;
     const tideResponse = await queryEndpoint(tideUrl);
-    const { type } = getClosestTimeEntry(tideResponse.tides);
+    const { type } = getTomorrowsEntry(tideResponse.tides);
     return `${ toFirstWordUppercase(type) } tide`;
 };
 
 const getWeatherSummary = async (spotId) => {
-    const weatherUrl = `http://services.surfline.com/kbyg/spots/forecasts/weather?spotId=${ spotId }&days=1&intervalHours=4`;
+    const weatherUrl = `http://services.surfline.com/kbyg/spots/forecasts/weather?spotId=${ spotId }&days=2&intervalHours=4`;
     const weatherResponse = await queryEndpoint(weatherUrl);
 
     const sunrise = new Date(weatherResponse.sunlightTimes[0].sunrise * 1000).toLocaleTimeString([], {
@@ -58,15 +58,15 @@ const getWeatherSummary = async (spotId) => {
         minute: '2-digit',
         hour12: false
     });
-    const { temperature, condition } = getClosestTimeEntry(weatherResponse.weather);
+    const { temperature, condition } = getTomorrowsEntry(weatherResponse.weather);
     return `${ parseInt(temperature) }º ${ emojiConverter.convertWeather(condition) }, Sunrise ${ sunrise }`;
 };
 
 const getWindSummary = async (spotId) => {
-    const windUrl = `http://services.surfline.com/kbyg/spots/forecasts/wind?spotId=${ spotId }&days=1&intervalHours=4`;
+    const windUrl = `http://services.surfline.com/kbyg/spots/forecasts/wind?spotId=${ spotId }&days=2&intervalHours=4`;
     const windResponse = await queryEndpoint(windUrl);
 
-    const { direction, speed } = getClosestTimeEntry(windResponse.wind);
+    const { direction, speed } = getTomorrowsEntry(windResponse.wind);
     return `${ emojiConverter.convertDirection(direction) }  wind at ${ parseInt(speed) }kts`;
 };
 

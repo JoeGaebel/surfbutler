@@ -1,12 +1,13 @@
 jest.mock('../utilities/clock');
 const getCurrentTimestamp = require('../utilities/clock').getCurrentTimestamp;
-const getClosestTimeEntry = require('../utilities/timeEntry').getClosest;
+const getCurrentEntry = require('../utilities/timeEntry').getCurrentEntry;
+const getTomorrowsEntry = require('../utilities/timeEntry').getTomorrowMorningsEntry;
 const convertDirection = require('../utilities/emojiConverter').convertDirection;
 const convertWeather = require('../utilities/emojiConverter').convertWeather;
 const toFirstWordUppercase = require('../utilities/stringUtils').toFirstWordUppercase;
 
-describe('getClosestTimeEntry', () => {
-    const currentTime = 1552068000;
+describe('getCurrentEntry', () => {
+    const currentTime = 1552068000000;
     beforeEach(() => {
         getCurrentTimestamp.mockReturnValue(currentTime);
     });
@@ -18,8 +19,30 @@ describe('getClosestTimeEntry', () => {
             { 'timestamp': currentTime + 50 },
         ];
 
-        const closest = getClosestTimeEntry(elements);
+        const closest = getCurrentEntry(elements);
         expect(closest.timestamp).toEqual(currentTime + 50);
+    });
+});
+
+describe('getTomorrowsEntry', () => {
+    const currentTime = 1556956800000; // 4 May 2019 18:00 GMT+10:00
+    beforeEach(() => {
+        getCurrentTimestamp.mockReturnValue(currentTime);
+    });
+
+    const tomorrowMorning = 1557000000000; // 5 May 2019 6:00 GMT+10:00
+    const tomorrowAfternoon = 1557028800000;  // 5 May 2019 14:00 GMT+10:00
+    it('Get the closest time entry', () => {
+        const elements = [
+            { 'timestamp': currentTime + 100 },
+            { 'timestamp': currentTime - 100 },
+            { 'timestamp': currentTime + 50 },
+            { 'timestamp': tomorrowMorning },
+            { 'timestamp': tomorrowAfternoon }
+        ];
+
+        const closest = getTomorrowsEntry(elements);
+        expect(closest.timestamp).toEqual(tomorrowMorning);
     });
 });
 
