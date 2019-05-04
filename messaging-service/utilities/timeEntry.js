@@ -18,13 +18,6 @@ function getClosest (timeEntries, time) {
 
     timeEntries.forEach(element => {
         if (Math.abs(time - element.timestamp) < smallestTimestampDelta) {
-            console.log(
-                'time: ' + element.timestamp + '\n' +
-                'delta: ' + Math.abs(time - element.timestamp) + '\n' +
-                'sDelta: ' + smallestTimestampDelta + '\n' +
-                'sTime: ' + closestElement.timestamp + '\n'
-
-        );
             closestElement = element;
             smallestTimestampDelta = Math.abs(time - element.timestamp);
         }
