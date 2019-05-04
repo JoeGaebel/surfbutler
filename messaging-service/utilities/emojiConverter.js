@@ -13,6 +13,7 @@ exports.convertWeather = (condition) => {
             return '🌦';
         case 'OVERCAST_RAIN':
         case 'CLEAR_RAIN':
+        case 'NIGHT_CLEAR_RAIN':
             return '🌧';
         case 'NIGHT_CLEAR_NO_RAIN':
         case 'NIGHT_PARTLY_CLOUDY_NO_RAIN':
@@ -21,6 +22,7 @@ exports.convertWeather = (condition) => {
         case 'NIGHT_PARTLY_CLOUDY_RAIN':
         case 'NIGHT_OVERCAST_NO_RAIN':
             return '✨';
+
         default:
             return condition;
     }
