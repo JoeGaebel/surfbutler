@@ -25,13 +25,13 @@ describe('getCurrentEntry', () => {
 });
 
 describe('getTomorrowsEntry', () => {
-    const currentTime = 1556956800000; // 4 May 2019 18:00 GMT+10:00
+    const currentTime = new Date(2019, 4, 4, 18).getTime();
     beforeEach(() => {
         getCurrentTimestamp.mockReturnValue(currentTime);
     });
 
-    const tomorrowMorning = 1557000000000; // 5 May 2019 6:00 GMT+10:00
-    const tomorrowAfternoon = 1557028800000;  // 5 May 2019 14:00 GMT+10:00
+    const tomorrowMorning = new Date(2019, 4, 5, 6).getTime();
+    const tomorrowAfternoon = new Date(2019, 4, 5, 14).getTime();
     it('Get the closest time entry', () => {
         const elements = [
             { 'timestamp': currentTime + 100 },
