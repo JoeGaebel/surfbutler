@@ -22,11 +22,20 @@ describe('App', () => {
         bronteCheckbox.setChecked(true);
         bronteCheckbox.trigger('change');
 
-        wrapper.find('button').trigger('click');
+        const submitButton = wrapper.find('button');
+        expect(submitButton.attributes().disabled).toEqual(undefined);
+        submitButton.trigger('click');
 
         expect(axios.post).toHaveBeenCalledWith(
             'https://oe8wr7ipkk.execute-api.ap-southeast-2.amazonaws.com/default/surfbutler-signup-parser',
             { phoneNumber: '0439363614', beaches: ['bondi', 'bronte'] },
         );
+    });
+
+    it('disables the button unless a box is ticked and a phone number is entered', () => {
+        const wrapper = mount(App);
+
+        const submitButton = wrapper.find('button');
+        expect(submitButton.attributes().disabled).toEqual('disabled');
     });
 });
