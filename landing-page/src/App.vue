@@ -8,7 +8,7 @@
                 Get a text the night before it's pumping
             </div>
             <div class="call-to-action">
-                Sign up to receive free surf reports for the beaches you surf
+                Sign up to receive free surf reports for the beaches you surf. Coming soon!
             </div>
             <div class="form">
                 <div class="checkboxes columns is-mobile">
@@ -58,13 +58,13 @@
                     class="button is-link"
                     @click="submit"
                 >
-                    Let's go!
+                    I'm interested!
                 </button>
                 <div
                     v-if="isSuccess"
                     class="alert success-alert"
                 >
-                    Success 🤙
+                    Success 🤙We'll be in touch
                 </div>
                 <div
                     v-if="isError"

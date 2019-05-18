@@ -30,8 +30,22 @@ export default {
         width: 100%;
     }
 
+    @media (max-width: 500px) {
+        .checkbox:hover {
+            color: white !important;
+        }
+
+        .checkbox {
+            line-height: 2.25 !important;
+        }
+
+        .checkbox input {
+            top: 2px !important;
+        }
+    }
+
     .checkbox:hover {
-        color: cornflowerblue !important;
+        color: cornflowerblue;
     }
 
     .checkbox {
