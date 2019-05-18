@@ -25,7 +25,7 @@ describe('App', () => {
         wrapper.find('button').trigger('click');
 
         expect(axios.post).toHaveBeenCalledWith(
-            'https://re8snrkix7.execute-api.ap-southeast-2.amazonaws.com/default/surf-butler-landing-page-data-parser',
+            'https://oe8wr7ipkk.execute-api.ap-southeast-2.amazonaws.com/default/surfbutler-signup-parser',
             { phoneNumber: '0439363614', beaches: ['bondi', 'bronte'] },
         );
     });

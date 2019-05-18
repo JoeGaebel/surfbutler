@@ -88,7 +88,7 @@ import axios from 'axios';
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import BeachBox from './components/BeachBox.vue';
 
-const apiUrl = 'https://re8snrkix7.execute-api.ap-southeast-2.amazonaws.com/default/surf-butler-landing-page-data-parser';
+const apiUrl = 'https://oe8wr7ipkk.execute-api.ap-southeast-2.amazonaws.com/default/surfbutler-signup-parser';
 Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 
 export default {
