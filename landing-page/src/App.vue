@@ -4,16 +4,11 @@
             Surf Butler
         </div>
         <div class="panel">
-            <div class="sub-title">
-                Surf's Up!
-            </div>
             <div class="description">
-                Want to know when your beaches are pumping?
-                Get a text the night before from Surf Butler.
+                Get a text the night before it's pumping
             </div>
             <div class="call-to-action">
-                Pick your favourite beaches and enter your mobile
-                number to receive free updates!
+                Sign up to receive free surf reports for the beaches you surf
             </div>
             <div class="form">
                 <div class="checkboxes columns is-mobile">
@@ -156,14 +151,8 @@ export default {
         margin-bottom: 30px;
     }
 
-    .sub-title {
-        color: white;
-        font-size: 42px;
-        margin-bottom: 0;
-    }
-
     .description {
-        color: #656565;
+        color: white;
         font-size: 21px;
         margin-bottom: 15px;
     }
@@ -171,6 +160,8 @@ export default {
     .call-to-action {
         font-size: 14px;
         margin-bottom: 15px;
+        font-weight: 800;
+        color: #8ac9f9;
     }
 
     .form {
@@ -190,7 +181,6 @@ export default {
     @media (max-width: 375px) {
         .header {
             font-size: 73px !important;
-            margin-bottom: 0 !important;
         }
 
         .panel {
@@ -207,10 +197,6 @@ export default {
         .panel {
             width: 300px !important;
         }
-
-        .sub-title {
-            font-size: 34px;
-        }
     }
 
     /*noinspection CssUnusedSymbol*/
@@ -223,7 +209,7 @@ export default {
         font-size: 76px;
         align-self: center;
         border-radius: 10px;
-        margin-bottom: 25px;
+        margin-bottom: 10px;
         font-family: 'Lily Script One', cursive;
     }
 

@@ -27,10 +27,20 @@ export default {
 <style scoped>
     label {
         text-transform: capitalize;
+        width: 100%;
     }
 
     .checkbox:hover {
         color: cornflowerblue !important;
+    }
+
+    .checkbox {
+        line-height: 1.75;
+    }
+
+    .checkbox input {
+        margin-right: 2px;
+        top: -1px;
     }
 
     label.checkbox {
