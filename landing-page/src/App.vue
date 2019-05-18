@@ -191,7 +191,7 @@ export default {
 
     @media (max-width: 375px) {
         .header {
-            font-size: 73px !important;
+            font-size: 70px !important;
         }
 
         .panel {
