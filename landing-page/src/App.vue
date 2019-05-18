@@ -9,7 +9,7 @@
             </div>
             <div class="description">
                 Want to know when your beaches are pumping?
-                Get a text the night before from Surf Bulter.
+                Get a text the night before from Surf Butler.
             </div>
             <div class="call-to-action">
                 Pick your favourite beaches and enter your mobile
