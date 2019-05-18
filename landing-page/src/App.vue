@@ -55,6 +55,7 @@
                 />
                 <button
                     v-if="!isStarted"
+                    :disabled="!mobileValid"
                     class="button is-link"
                     @click="submit"
                 >
@@ -64,7 +65,7 @@
                     v-if="isSuccess"
                     class="alert success-alert"
                 >
-                    Success 🤙We'll be in touch
+                    We'll be in touch 🤙
                 </div>
                 <div
                     v-if="isError"
@@ -97,6 +98,7 @@ export default {
         isStarted: false,
         isSuccess: false,
         isError: false,
+        mobileValid: false,
         beaches: {
             bondi: false,
             tamarama: false,
@@ -107,12 +109,18 @@ export default {
             manly: false,
         },
     }),
+    watch: {
+        mobile(val) { this.setEngagement(val); },
+    },
     methods: {
-        submit() {
-            const beachList = Object.keys(this.beaches).reduce((list, curr) => {
+        getBeachList(beachesObj) {
+            return Object.keys(beachesObj).reduce((list, curr) => {
                 if (this.beaches[curr]) list.push(curr);
                 return list;
             }, []);
+        },
+        submit() {
+            const beachList = this.getBeachList(this.beaches);
 
             this.isStarted = true;
 
@@ -121,6 +129,9 @@ export default {
             }).catch(() => {
                 this.isError = true;
             });
+        },
+        setEngagement(mobile) {
+            this.mobileValid = mobile.replace(/ /g, '').length > 8;
         },
     },
 };
