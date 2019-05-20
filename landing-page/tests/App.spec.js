@@ -7,7 +7,7 @@ jest.mock('axios', () => ({
 }));
 
 describe('App', () => {
-    it('saves the phone number and beaches when clicking the button', () => {
+    it('saves the phone number with country code and beaches when clicking the button', () => {
         const wrapper = mount(App);
 
         const phoneField = wrapper.find('#VuePhoneNumberInput_phone_number');
@@ -28,7 +28,7 @@ describe('App', () => {
 
         expect(axios.post).toHaveBeenCalledWith(
             'https://oe8wr7ipkk.execute-api.ap-southeast-2.amazonaws.com/default/surfbutler-signup-parser',
-            { phoneNumber: '0439363614', beaches: ['bondi', 'bronte'] },
+            { phoneNumber: '+610439363614', beaches: ['bondi', 'bronte'] },
         );
     });
 
