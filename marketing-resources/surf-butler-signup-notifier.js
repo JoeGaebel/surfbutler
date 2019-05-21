@@ -12,7 +12,7 @@ exports.handler = async (event, context) => {
                 .publish({ Message: message, TopicArn: 'arn:aws:sns:ap-southeast-2:077179938403:SurfButlerDevs' })
                 .promise();
 
-            publishTextPromise
+            await publishTextPromise
                 .then(data => console.log('MessageID is ' + data.MessageId))
                 .catch(err => console.error(err, err.stack));
         }
