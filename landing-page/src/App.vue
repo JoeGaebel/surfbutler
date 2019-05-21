@@ -124,7 +124,11 @@ export default {
 
             this.isStarted = true;
 
-            axios.post(apiUrl, { phoneNumber: this.mobile.replace(/ /g, ''), beaches: beachList }).then(() => {
+            // eslint-disable-next-line no-underscore-dangle
+            const countryCode = this.$el.querySelector('#VuePhoneNumberInput_country_selector')._value;
+            const mobileNumber = countryCode + this.mobile.replace(/ /g, '');
+
+            axios.post(apiUrl, { phoneNumber: mobileNumber, beaches: beachList }).then(() => {
                 this.isSuccess = true;
             }).catch(() => {
                 this.isError = true;
