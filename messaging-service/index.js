@@ -14,6 +14,6 @@ exports.handler = async () => {
     const response = { statusCode: 200, body: summaryRequests };
     console.log('response: ', response);
 
-    summaryRequests.forEach(element => send(element));
+    await send(summaryRequests[0]);
     return response;
 };
