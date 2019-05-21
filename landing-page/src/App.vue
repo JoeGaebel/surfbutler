@@ -143,9 +143,8 @@ export default {
 
 <style>
     body {
-        padding: 10px;
         background-position-x: 79%;
-        background-size: auto;
+        background-size: cover;
         background: url('./assets/background.jpg') no-repeat fixed 79% 0;
     }
 
@@ -190,6 +189,7 @@ export default {
     }
 
     html {
+        overflow-y: hidden;
         background-color: unset !important;
     }
 
