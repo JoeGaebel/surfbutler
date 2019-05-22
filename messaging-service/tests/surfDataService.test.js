@@ -11,7 +11,7 @@ describe('getSummary', () => {
         expect(summary).toMatch(new RegExp('.*The swell\'s .*ft at .*s.*'));
         expect(summary).toMatch(new RegExp('.*ft waves'));
         expect(summary).toMatch(new RegExp('.*tide'));
-        expect(summary).toMatch(new RegExp('Sunrise .*:'));
+        expect(summary).toMatch(new RegExp('sunrise .*:'));
         expect(summary).toMatch(new RegExp('.*º.*'));
         expect(summary).toMatch(new RegExp('.* wind at .*kts'));
     });

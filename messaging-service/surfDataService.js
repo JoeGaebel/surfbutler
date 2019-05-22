@@ -75,7 +75,7 @@ const getWeatherSummary = (weatherResponse, sunriseTimestamp) => {
         hour12: false
     });
     const { temperature, condition } = getClosestTimeEntry(weatherResponse.weather, sunriseTimestamp);
-    return `${ parseInt(temperature) }º ${ emojiConverter.convertWeather(condition) }, Sunrise ${ sunriseTime }`;
+    return `${ parseInt(temperature) }º ${ emojiConverter.convertWeather(condition) }, sunrise ${ sunriseTime }`;
 };
 
 const getWindSummary = async (spotId, sunriseTimestamp) => {
