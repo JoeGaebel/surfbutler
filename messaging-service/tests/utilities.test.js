@@ -5,6 +5,8 @@ const getTomorrowsEntry = require('../utilities/timeEntry').getTomorrowMorningsE
 const convertDirection = require('../utilities/emojiConverter').convertDirection;
 const convertWeather = require('../utilities/emojiConverter').convertWeather;
 const toFirstWordUppercase = require('../utilities/stringUtils').toFirstWordUppercase;
+const toFeet = require('../utilities/numberUtils').toFeet;
+const round = require('../utilities/numberUtils').round;
 
 describe('getCurrentEntry', () => {
     const currentTime = 1552068000000;
@@ -98,5 +100,18 @@ describe('stringUtils', () => {
         expect(toFirstWordUppercase('Hello world!')).toEqual('Hello world!');
         expect(toFirstWordUppercase('1234')).toEqual('1234');
         expect(toFirstWordUppercase('!?')).toEqual('!?');
+    });
+});
+
+describe('numberUtils', () => {
+    it('toFeet', () => {
+       expect(toFeet(1)).toEqual(3.3);
+    });
+    it('round', () => {
+        expect(round(1, 1)).toEqual(1);
+        expect(round(1.5, 0)).toEqual(2);
+        expect(round(1.4, 1)).toEqual(1.4);
+        expect(round(0.4329841, 1)).toEqual(0.4);
+        expect(round(0.4529841, 1)).toEqual(0.5);
     });
 });
