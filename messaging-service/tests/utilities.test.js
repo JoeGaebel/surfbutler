@@ -1,7 +1,6 @@
 jest.mock('../utilities/clock');
 const getCurrentTimestamp = require('../utilities/clock').getCurrentTimestamp;
 const getCurrentEntry = require('../utilities/timeEntry').getCurrentEntry;
-const getTomorrowsEntry = require('../utilities/timeEntry').getTomorrowMorningsEntry;
 const convertDirection = require('../utilities/emojiConverter').convertDirection;
 const convertWeather = require('../utilities/emojiConverter').convertWeather;
 const toFeet = require('../utilities/numberUtils').toFeet;
@@ -22,28 +21,6 @@ describe('getCurrentEntry', () => {
 
         const closest = getCurrentEntry(elements);
         expect(closest.timestamp).toEqual(currentTime + 50);
-    });
-});
-
-describe('getTomorrowsEntry', () => {
-    const currentTime = new Date(2019, 4, 4, 18).getTime();
-    beforeEach(() => {
-        getCurrentTimestamp.mockReturnValue(currentTime);
-    });
-
-    const tomorrowMorning = new Date(2019, 4, 5, 6).getTime();
-    const tomorrowAfternoon = new Date(2019, 4, 5, 14).getTime();
-    it('Get the closest time entry', () => {
-        const elements = [
-            { 'timestamp': currentTime + 100 },
-            { 'timestamp': currentTime - 100 },
-            { 'timestamp': currentTime + 50 },
-            { 'timestamp': tomorrowMorning },
-            { 'timestamp': tomorrowAfternoon }
-        ];
-
-        const closest = getTomorrowsEntry(elements);
-        expect(closest.timestamp).toEqual(tomorrowMorning);
     });
 });
 

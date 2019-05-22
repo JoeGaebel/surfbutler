@@ -2,17 +2,17 @@ const { getCurrentTimestamp } = require('./clock');
 
 exports.getCurrentEntry = (timeEntries) => {
     const currentTimestamp = getCurrentTimestamp();
-    return getClosest(timeEntries, currentTimestamp);
+    return this.getClosest(timeEntries, currentTimestamp);
 };
 
-exports.getTomorrowMorningsEntry = (timeEntries) => {
+exports.getTomorrowMorning = (timeEntries) => {
     const tomorrowMorning = new Date();
     tomorrowMorning.setDate(new Date(getCurrentTimestamp()).getDate() +1);
     tomorrowMorning.setHours(6,0,0);
-    return getClosest(timeEntries, tomorrowMorning);
+    return this.getClosest(timeEntries, tomorrowMorning);
 };
 
-function getClosest (timeEntries, time) {
+exports.getClosest = (timeEntries, time) => {
     let closestElement = timeEntries[0];
     let smallestTimestampDelta = Infinity;
 
@@ -24,4 +24,4 @@ function getClosest (timeEntries, time) {
     });
 
     return closestElement;
-}
+};
