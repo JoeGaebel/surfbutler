@@ -4,7 +4,6 @@ const getCurrentEntry = require('../utilities/timeEntry').getCurrentEntry;
 const getTomorrowsEntry = require('../utilities/timeEntry').getTomorrowMorningsEntry;
 const convertDirection = require('../utilities/emojiConverter').convertDirection;
 const convertWeather = require('../utilities/emojiConverter').convertWeather;
-const toFirstWordUppercase = require('../utilities/stringUtils').toFirstWordUppercase;
 const toFeet = require('../utilities/numberUtils').toFeet;
 const round = require('../utilities/numberUtils').round;
 
@@ -89,17 +88,6 @@ describe('convertWeather', () => {
     it('Test invalid value', () => {
         expect(convertWeather(400)).toEqual(400);
         expect(convertWeather('Text')).toEqual('Text');
-    });
-});
-
-describe('stringUtils', () => {
-    it('toFirstWordUppercase', () => {
-        expect(toFirstWordUppercase('HELLO WORLD')).toEqual('Hello world');
-        expect(toFirstWordUppercase('hello world')).toEqual('Hello world');
-        expect(toFirstWordUppercase('Hello world')).toEqual('Hello world');
-        expect(toFirstWordUppercase('Hello world!')).toEqual('Hello world!');
-        expect(toFirstWordUppercase('1234')).toEqual('1234');
-        expect(toFirstWordUppercase('!?')).toEqual('!?');
     });
 });
 
