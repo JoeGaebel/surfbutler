@@ -15,7 +15,11 @@ exports.getSummary = async (spotName, spotId) => {
         getWindSummary(spotId)
     ]);
     const [swells, waves, tide, weather, wind] = values;
-    return `${ spotName }, ${ weather }\nThe swell's ${ swells } on a ${ tide }, ${ waves }, ${ wind }`;
+
+    return {
+        message: `${ spotName }, ${ weather }\nThe swell's ${ swells } on a ${ tide }, ${ waves }, ${ wind }`,
+        name: spotName
+    };
 };
 
 // Nullable

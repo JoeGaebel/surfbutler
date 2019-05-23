@@ -11,11 +11,13 @@ exports.handler = async () => {
         getSummary('Tamarama', tamaramaSpotId),
         getSummary('Bronte', bronteSpotId)
     ]);
+
     const response = { statusCode: 200, body: summaryRequests };
     console.log('response: ', response);
 
     for (let i = 0; i < summaryRequests.length; i++) {
         await send(summaryRequests[i]);
     }
+
     return response;
 };

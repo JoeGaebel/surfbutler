@@ -1,13 +1,10 @@
 const AWS = require('aws-sdk');
+const { createCampaignSchema } = require('./campaign');
 
 AWS.config.update({ region: 'ap-southeast-2' });
 
-exports.send = (message) => {
-    const publishTextPromise = new AWS.SNS({ apiVersion: '2010-03-31', region: 'ap-southeast-2' })
-        .publish({ Message: message, TopicArn: 'arn:aws:sns:ap-southeast-2:077179938403:SurfButler' })
-        .promise();
-
-    return publishTextPromise
-        .then(data => console.log('MessageID is ' + data.MessageId))
-        .catch(err => console.error(err, err.stack));
+exports.send = ({ message, name }) => {
+    const campaignSchema = createCampaignSchema(message, name);
+    const pinpoint = new AWS.Pinpoint({ apiVersion: '2016-12-01' });
+    return pinpoint.createCampaign(campaignSchema, (err, data) => console.log(err, data)).promise();
 };
