@@ -1,7 +1,7 @@
 const moment = require('moment');
 
-module.exports.createCampaignSchema = (message, beachName) => ({
-    ApplicationId: 'efba3f1fc914421f88cb01c0efb16ffd',
+module.exports.createCampaignSchema = (message, beachName, applicationId) => ({
+    ApplicationId: applicationId,
     WriteCampaignRequest: {
         Description: 'Send a surf report',
         HoldoutPercent: 0,
