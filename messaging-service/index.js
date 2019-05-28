@@ -18,8 +18,9 @@ exports.handler = async () => {
 
     for (let i = 0; i < summaryRequests.length; i++) {
         const { name, message } = summaryRequests[i];
-        const segmentId = segments[name];
-        const response = await send({ segmentId, message, name, applicationId });
+        const segment = segments[name];
+
+        const response = await send({ segment, message, name, applicationId });
         console.log(response);
     }
 };

@@ -3,20 +3,20 @@ const { createCampaignSchema } = require('./campaign');
 
 AWS.config.update({ region: 'ap-southeast-2' });
 
-exports.send = async ({ message, name, segmentId, applicationId }) => {
-    const pinpoint = new AWS.Pinpoint({ apiVersion: '2016-12-01' });
-    const campaignSchema = createCampaignSchema({ message, beachName: name, applicationId, segmentId });
+exports.send = async ({ message, name, segment, applicationId }) => {
+    const pinpoint = new AWS.Pinpoint();
+    const campaignSchema = createCampaignSchema({ message, beachName: name, applicationId, segment });
     return pinpoint.createCampaign(campaignSchema).promise();
 };
 
 exports.getSegmentIds = async (applicationId) => {
-    const pinpoint = new AWS.Pinpoint({ apiVersion: '2016-12-01' });
+    const pinpoint = new AWS.Pinpoint();
     const segmentRequest = { ApplicationId: applicationId };
-    const segmentResponse = await pinpoint.getSegments(segmentRequest, () => {}).promise();
-
+    const segmentResponse = await pinpoint.getSegments(segmentRequest).promise();
     const segments = {};
+
     segmentResponse['SegmentsResponse']['Item'].forEach((item) => {
-        segments[item['Name']] = item['Id'];
+        segments[item['Name']] = { id: item['Id'], version: item['Version'] };
     });
 
     return segments;

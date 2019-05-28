@@ -29,21 +29,21 @@ describe('handler', () => {
         expect(getSummary).toHaveBeenCalledWith('Bronte', '584204204e65fad6a77093ef');
 
         expect(send).toHaveBeenCalledWith({
-            segmentId: 'bondi seg',
+            segment: 'bondi seg',
             message: 'Bondi summary',
             name: 'Bondi',
             applicationId: 'efba3f1fc914421f88cb01c0efb16ffd'
         });
 
         expect(send).toHaveBeenCalledWith({
-            segmentId: 'tam seg',
+            segment: 'tam seg',
             message: 'Tamarama summary',
             name: 'Tamarama',
             applicationId: 'efba3f1fc914421f88cb01c0efb16ffd'
         });
 
         expect(send).toHaveBeenCalledWith({
-            segmentId: 'bronte seg',
+            segment: 'bronte seg',
             message: 'Bronte summary',
             name: 'Bronte',
             applicationId: 'efba3f1fc914421f88cb01c0efb16ffd'
