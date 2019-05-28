@@ -14,16 +14,14 @@ module.exports.createCampaignSchema = ({ message, beachName, segment, applicatio
         },
         MessageConfiguration: {
             SMSMessage: {
-                Body: `${ message } - FROM THE API`,
+                Body: message,
                 MessageType: 'PROMOTIONAL'
             }
         },
         Name: `${ beachName }-${ moment().format('DD.MM.YYYY-HH:mm:ss') }`,
         Schedule: {
             Frequency: 'ONCE',
-            IsLocalTime: true,
-            StartTime: moment().add(16, 'minute').toISOString(),
-            Timezone: 'UTC+10'
+            StartTime: "IMMEDIATE"
         },
         SegmentId: segment.id,
         SegmentVersion: segment.version
