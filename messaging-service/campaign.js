@@ -21,7 +21,7 @@ module.exports.createCampaignSchema = ({ message, beachName, segment, applicatio
         Name: `${ beachName }-${ moment().format('DD.MM.YYYY-HH:mm:ss') }`,
         Schedule: {
             Frequency: 'ONCE',
-            StartTime: "IMMEDIATE"
+            StartTime: 'IMMEDIATE'
         },
         SegmentId: segment.id,
         SegmentVersion: segment.version

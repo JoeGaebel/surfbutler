@@ -2,6 +2,9 @@ const axios = require('axios');
 const getClosestTimeEntry = require('./utilities/timeEntry').getClosest;
 const emojiConverter = require('./utilities/emojiConverter');
 const toFeet = require('./utilities/numberUtils').toFeet;
+const axiosRetry = require('axios-retry');
+
+axiosRetry(axios, { retries: 10, retryDelay: axiosRetry.exponentialDelay });
 
 exports.getSummary = async (spotName, spotId) => {
     const weatherResponse = await getWeatherData(spotId);
