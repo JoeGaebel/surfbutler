@@ -3,16 +3,21 @@ const { createCampaignSchema } = require('./campaign');
 
 AWS.config.update({ region: 'ap-southeast-2' });
 
-exports.send = ({ message, name }) => {
+exports.send = async ({ message, name, segmentId, applicationId }) => {
     const pinpoint = new AWS.Pinpoint({ apiVersion: '2016-12-01' });
+    const campaignSchema = createCampaignSchema({ message, beachName: name, applicationId, segmentId });
+    return pinpoint.createCampaign(campaignSchema).promise();
+};
 
-    pinpoint.createApp({ CreateApplicationRequest: { Name: 'Surfbutler' } }, function (err, data) {
-        console.log('Create Pinpoint-App error' + err);
-        console.log('Create Pinpoint-App data' + JSON.stringify(data));
+exports.getSegmentIds = async (applicationId) => {
+    const pinpoint = new AWS.Pinpoint({ apiVersion: '2016-12-01' });
+    const segmentRequest = { ApplicationId: applicationId };
+    const segmentResponse = await pinpoint.getSegments(segmentRequest, () => {}).promise();
 
-        console.log(JSON.stringify(pinpoint.getSegments({ 'ApplicationId': data.Id })));
-
-        const campaignSchema = createCampaignSchema(message, name, data.Id);
-        return pinpoint.createCampaign(campaignSchema, (err, data) => console.log(err, data)).promise();
+    const segments = {};
+    segmentResponse['SegmentsResponse']['Item'].forEach((item) => {
+        segments[item['Name']] = item['Id'];
     });
+
+    return segments;
 };

@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-module.exports.createCampaignSchema = (message, beachName, applicationId) => ({
+module.exports.createCampaignSchema = ({ message, beachName, segmentId, applicationId }) => ({
     ApplicationId: applicationId,
     WriteCampaignRequest: {
         Description: 'Send a surf report',
@@ -13,14 +13,14 @@ module.exports.createCampaignSchema = (message, beachName, applicationId) => ({
                 SenderId: 'SurfButler'
             }
         },
-        Name: `${ beachName }-${ Date.now() }`,
+        Name: `${ beachName }-${ moment().format('DD.MM.YYYY-HH:mm:ss') }`,
         Schedule: {
             Frequency: 'ONCE',
             IsLocalTime: true,
             StartTime: moment().add(1, 'minute').toISOString(),
             Timezone: 'UTC+10'
         },
-        SegmentId: beachName,
+        SegmentId: segmentId,
         SegmentVersion: 1,
     }
 });
