@@ -29,7 +29,7 @@ exports.getSummary = async (spotName, spotId) => {
 const getSwellSummary = async (spotId, sunriseTimestamp) => {
     const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=2&intervalHours=4&maxHeights=false`;
     const swellResponse = await queryEndpoint(swellUrl);
-    const swells = getClosestTimeEntry(swellResponse.wave, sunriseTimestamp).swells;
+    const swells = getRelevantSwells(getClosestTimeEntry(swellResponse.wave, sunriseTimestamp).swells);
 
     let swellsText;
     let heighestHeight = 0;
@@ -48,6 +48,31 @@ const getSwellSummary = async (spotId, sunriseTimestamp) => {
     });
 
     return swellsText;
+};
+
+const getRelevantSwells = (swells) => {
+    const relevantSwells = [];
+    swells.forEach(swell => {
+        // Between N and S
+        if (swell.direction > 0 && swell.direction <= 191.25) {
+            relevantSwells.push(swell);
+        }
+    });
+
+    if (relevantSwells.length === 0) {
+        console.log('There wasn\'t a relevant swell', swells);
+        // take the smallest direction since that's the least west
+        let smallestDirection = 360;
+        let smallestDirectionSwell;
+        swells.forEach(swell => {
+            if (swell.direction < smallestDirection && swell.height > 0 && swell.period > 0) {
+                smallestDirection = swell.direction;
+                smallestDirectionSwell = swell;
+            }
+        });
+        relevantSwells.push(smallestDirectionSwell);
+    }
+    return relevantSwells;
 };
 
 const getWaveHeightSummary = async (spotId, sunriseTimestamp) => {
