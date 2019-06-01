@@ -12,11 +12,11 @@ describe('getSummary', () => {
 
         expect(name).toEqual('Bondi');
 
-        expect(message).toMatch(new RegExp('.*The swell\'s .*ft at .*s.*'));
-        expect(message).toMatch(new RegExp('.*ft waves'));
-        expect(message).toMatch(new RegExp('.*tide'));
-        expect(message).toMatch(new RegExp('sunrise .*:'));
         expect(message).toMatch(new RegExp('.*º.*'));
+        expect(message).toMatch(new RegExp('sunrise .*:'));
+        expect(message).toMatch(new RegExp('.*ft waves'));
+        expect(message).toMatch(new RegExp('.*the swell\'s .*ft at .*s.*'));
+        expect(message).toMatch(new RegExp('with a .*tide'));
         expect(message).toMatch(new RegExp('.* wind at .*kts'));
     });
 });
