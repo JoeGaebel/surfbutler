@@ -29,7 +29,7 @@ const getSwellSummary = async (spotId, sunriseTimestamp) => {
     const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=2&intervalHours=4&maxHeights=false`;
     const swellResponse = await queryEndpoint(swellUrl);
     const { height, period, direction } = getSwell(getClosestTimeEntry(swellResponse.wave, sunriseTimestamp).swells);
-    return `${ toFeet(height) }ft at ${ period }s ${ direction }`;
+    return `${ toFeet(height) }ft at ${ period }s ${ emojiConverter.convertDirection(direction) }`;
 };
 
 const getSwell = (swells) => {
