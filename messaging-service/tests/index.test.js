@@ -25,9 +25,9 @@ describe('handler', () => {
 
         await handler();
 
-        expect(getSummary).toHaveBeenCalledWith('Bondi', 'Bondi', '5842041f4e65fad6a7708bf8');
-        expect(getSummary).toHaveBeenCalledWith('Tamarama', 'Tamarama', '584204204e65fad6a77093eb');
-        expect(getSummary).toHaveBeenCalledWith('Bronte', 'Bronte', '584204204e65fad6a77093ef');
+        expect(getSummary).toHaveBeenCalledWith('Bondi', '5842041f4e65fad6a7708bf8');
+        expect(getSummary).toHaveBeenCalledWith('Tamarama', '584204204e65fad6a77093eb');
+        expect(getSummary).toHaveBeenCalledWith('Bronte', '584204204e65fad6a77093ef');
 
         expect(send).toHaveBeenCalledWith({
             segment: 'bondi seg',

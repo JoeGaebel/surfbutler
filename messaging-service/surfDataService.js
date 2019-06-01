@@ -136,4 +136,5 @@ const getWindSummary = async (spotId, sunriseTimestamp) => {
 
 const queryEndpoint = (url) => axios.get(url)
     .then(response => response.data.data)
-    .catch(error => console.log(error));
+    .catch(error => console.log('Error while quering the API endpoint: ', url, ' ',
+        error));
