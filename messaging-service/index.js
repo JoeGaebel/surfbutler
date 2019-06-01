@@ -2,25 +2,26 @@ const { getSegmentIds, send } = require('./messageService');
 const { getSummary } = require('./surfDataService');
 
 exports.handler = async () => {
-    const applicationId = 'efba3f1fc914421f88cb01c0efb16ffd';
-
-    const bondiSpotId = '5842041f4e65fad6a7708bf8';
-    const tamaramaSpotId = '584204204e65fad6a77093eb';
-    const bronteSpotId = '584204204e65fad6a77093ef';
-
     const summaryRequests = await Promise.all([
-        getSummary('Bondi', bondiSpotId),
-        getSummary('Tamarama', tamaramaSpotId),
-        getSummary('Bronte', bronteSpotId)
+        getSummary('Dee Why', 'Dee Why', '5842041f4e65fad6a7708bfa'),
+        getSummary('Curl Curl', 'Curl Curl', '5842041f4e65fad6a7708bfb'),
+        getSummary('Freshwater', 'Freshwater', '584204204e65fad6a77093e0'),
+        getSummary('Manly', 'Manly', '5842041f4e65fad6a7708bf7'),
+        getSummary('Bondi', 'Bondi', '5842041f4e65fad6a7708bf8'),
+        getSummary('Tamarama', 'Tamarama', '584204204e65fad6a77093eb'),
+        getSummary('Bronte', 'Bronte', '584204204e65fad6a77093ef')
     ]);
 
-    const segments = await getSegmentIds(applicationId);
+    const pinpointApplicationId = 'efba3f1fc914421f88cb01c0efb16ffd';
+    const segments = await getSegmentIds(pinpointApplicationId);
 
-    for (let i = 0; i < summaryRequests.length; i++) {
-        const { name, message } = summaryRequests[i];
-        const segment = segments[name];
+    for (const summaryRequest of summaryRequests) {
+        const { name, message } = summaryRequest;
 
-        const response = await send({ segment, message, name, applicationId });
+        const key = name.replace(' ', '-');
+        const segment = segments[key];
+
+        const response = await send({ segment, message, key, applicationId: pinpointApplicationId });
         console.log(response);
     }
 };

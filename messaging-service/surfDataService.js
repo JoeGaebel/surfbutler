@@ -6,7 +6,7 @@ const axiosRetry = require('axios-retry');
 
 axiosRetry(axios, { retries: 10, retryDelay: axiosRetry.exponentialDelay });
 
-exports.getSummary = async (spotName, spotId) => {
+exports.getSummary = async (name, spotId) => {
     const weatherResponse = await getWeatherData(spotId);
     const sunriseTimestamp = getSunrise(weatherResponse).getTime() / 1000;
 
@@ -20,8 +20,8 @@ exports.getSummary = async (spotName, spotId) => {
     const [swells, waves, tide, weather, wind] = values;
 
     return {
-        message: `${ spotName }, ${ weather }\nThe swell's ${ swells } on a ${ tide }, ${ waves }, ${ wind }`,
-        name: spotName
+        name,
+        message: `${ name }, ${ weather }\nThe swell's ${ swells } on a ${ tide }, ${ waves }, ${ wind }`
     };
 };
 
@@ -85,7 +85,7 @@ const getHighestSwell = (swells) => {
             highestSwell = swell;
         } else if (swell.height === highestHeight) {
             // logging so that we can verify if this can happen and improve which of the swells we display in that case
-            console.log(`There where two equaly high swells: ${ swell } and ${ highestSwell }`);
+            console.log('There where two equaly high swells:', swell,  'and ', highestSwell);
         }
     });
     return highestSwell;
