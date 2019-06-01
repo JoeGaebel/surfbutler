@@ -12,8 +12,8 @@ exports.handler = async () => {
         getSummary('Bronte', '584204204e65fad6a77093ef')
     ]);
 
-    const pinpointApplicationId = 'efba3f1fc914421f88cb01c0efb16ffd';
-    const segments = await getSegmentIds(pinpointApplicationId);
+    const applicationId = 'efba3f1fc914421f88cb01c0efb16ffd';
+    const segments = await getSegmentIds(applicationId);
 
     for (const summaryRequest of summaryRequests) {
         const { name, message } = summaryRequest;
@@ -21,7 +21,7 @@ exports.handler = async () => {
         const key = name.replace(' ', '-');
         const segment = segments[key];
 
-        const response = await send({ segment, message, key, applicationId: pinpointApplicationId });
+        const response = await send({ segment, message, key, applicationId });
         console.log(response);
     }
 };
