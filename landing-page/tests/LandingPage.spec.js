@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import axios from 'axios';
-import App from '../src/App.vue';
+import LandingPage from '../src/components/LandingPage.vue';
 
 jest.mock('axios', () => ({
     post: jest.fn(() => Promise.resolve()),
@@ -8,7 +8,7 @@ jest.mock('axios', () => ({
 
 describe('App', () => {
     it('saves the phone number with country code and beaches when clicking the button', () => {
-        const wrapper = mount(App);
+        const wrapper = mount(LandingPage);
 
         const phoneField = wrapper.find('#VuePhoneNumberInput_phone_number');
         phoneField.setValue('0439363614');
@@ -33,7 +33,7 @@ describe('App', () => {
     });
 
     it('disables the button unless a box is ticked and a phone number is entered', () => {
-        const wrapper = mount(App);
+        const wrapper = mount(LandingPage);
 
         const submitButton = wrapper.find('button');
         expect(submitButton.attributes().disabled).toEqual('disabled');
