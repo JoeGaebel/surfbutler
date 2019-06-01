@@ -25,29 +25,30 @@ exports.getSummary = async (spotName, spotId) => {
     };
 };
 
-// Nullable
 const getSwellSummary = async (spotId, sunriseTimestamp) => {
     const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=2&intervalHours=4&maxHeights=false`;
     const swellResponse = await queryEndpoint(swellUrl);
-    const swells = getRelevantSwells(getClosestTimeEntry(swellResponse.wave, sunriseTimestamp).swells);
+    const { height, period, direction } = getSwell(getClosestTimeEntry(swellResponse.wave, sunriseTimestamp).swells);
+    return `${ toFeet(height) }ft at ${ period }s ${ direction }`;
+};
 
-    let swellsText;
-    let heighestHeight = 0;
-    swells.forEach(swell => {
-        const height = toFeet(swell.height);
-        const period = swell.period;
-        const direction = emojiConverter.convertDirection(swell.direction);
+const getSwell = (swells) => {
+    const relevantSwells = getOptimalScoreSwells(swells);
+    if (relevantSwells !== undefined && relevantSwells.length === 1) {
+        return relevantSwells[0];
+    }
+    return getHighestSwell(getRelevantSwells(swells));
+};
 
-        if (height > heighestHeight) {
-            swellsText = `${ height }ft at ${ period }s ${ direction }`;
-            heighestHeight = height;
-        } else if (height === heighestHeight) {
-            // logging so that we can verify if this can happen and improve which of the swells we display in that case
-            console.log('There where two equal heights');
-        }
+const getOptimalScoreSwells = (swells) => {
+    const optimalScoreSwell = swells.filter(swell => {
+        return swell.optimalScore === 1;
     });
 
-    return swellsText;
+    if (optimalScoreSwell === undefined || optimalScoreSwell.length === 0) {
+        return swells;
+    }
+    return optimalScoreSwell;
 };
 
 const getRelevantSwells = (swells) => {
@@ -63,7 +64,7 @@ const getRelevantSwells = (swells) => {
         console.log('There wasn\'t a relevant swell', swells);
         // take the smallest direction since that's the least west
         let smallestDirection = 360;
-        let smallestDirectionSwell;
+        let smallestDirectionSwell = swells[0];
         swells.forEach(swell => {
             if (swell.direction < smallestDirection && swell.height > 0 && swell.period > 0) {
                 smallestDirection = swell.direction;
@@ -73,6 +74,21 @@ const getRelevantSwells = (swells) => {
         relevantSwells.push(smallestDirectionSwell);
     }
     return relevantSwells;
+};
+
+const getHighestSwell = (swells) => {
+    let highestHeight = 0;
+    let highestSwell;
+    swells.forEach(swell => {
+        if (swell.height > highestHeight) {
+            highestHeight = swell.height;
+            highestSwell = swell;
+        } else if (swell.height === highestHeight) {
+            // logging so that we can verify if this can happen and improve which of the swells we display in that case
+            console.log(`There where two equaly high swells: ${ swell } and ${ highestSwell }`);
+        }
+    });
+    return highestSwell;
 };
 
 const getWaveHeightSummary = async (spotId, sunriseTimestamp) => {
