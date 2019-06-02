@@ -16,15 +16,16 @@ exports.handler = async () => {
     const segments = await getSegmentIds(applicationId);
 
     for (const summaryRequest of summaryRequests) {
+        const { name, message } = summaryRequest;
+        const key = name.replace(' ', '-');
         const segment = segments[key];
         if (segment === undefined) {
             console.error('Segment of key ', key, ' doesn\'t exist');
             continue;
         }
-        const { name, message } = summaryRequest;
-        const key = name.replace(' ', '-');
 
         const response = await send({ segment, message, key, applicationId });
         console.log(response);
+        console.log(message);
     }
 };
