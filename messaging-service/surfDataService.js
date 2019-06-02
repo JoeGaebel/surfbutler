@@ -21,7 +21,7 @@ exports.getSummary = async (name, spotId) => {
 
     return {
         name,
-        message: `${ name }, ${ weather }\n${ waves }, the swell's ${ swells } with a ${ tide }, ${ wind }`
+        message: `${ name }, ${ weather }\n${ waves }, ${ tide }, the swell's ${ swells }, ${ wind }`
     };
 };
 

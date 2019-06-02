@@ -15,9 +15,9 @@ describe('getSummary', () => {
         expect(message).toMatch(new RegExp('.*, .*º.*'));
         expect(message).toMatch(new RegExp('.*, sunrise .*:'));
         expect(message).toMatch(new RegExp('.*ft waves'));
-        expect(message).toMatch(new RegExp('.*the swell\'s .*ft at .*s.* ((⬅️)|(⬆️)|(➡️)|(⬇️)|(↙️)|(↖️)|(↗️)|(↘️)) with'));
-        expect(message).toMatch(new RegExp('.*a .*tide'));
-        expect(message).toMatch(new RegExp('.* wind at .*kts ((⬅️)|(⬆️)|(➡️)|(⬇️)|(↙️)|(↖️)|(↗️)|(↘️))$'));
+        expect(message).toMatch(new RegExp('.*.*tide'));
+        expect(message).toMatch(new RegExp('.*the swell\'s .*ft at .*s.* (⬅️|⬆️|➡️|⬇️|↙️|↖️|↗️|↘️),'));
+        expect(message).toMatch(new RegExp('.* wind at .*kts (⬅️|⬆️|➡️|⬇️|↙️|↖️|↗️|↘️)$'));
     });
 });
 
