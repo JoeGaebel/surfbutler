@@ -3,9 +3,9 @@ const { createCampaignSchema } = require('./campaign');
 
 AWS.config.update({ region: 'ap-southeast-2' });
 
-exports.send = async ({ message, name, segment, applicationId }) => {
+exports.send = async ({ message, key, segment, applicationId }) => {
     const pinpoint = new AWS.Pinpoint();
-    const campaignSchema = createCampaignSchema({ message, beachName: name, applicationId, segment });
+    const campaignSchema = createCampaignSchema({ message, beachName: key, applicationId, segment });
     return pinpoint.createCampaign(campaignSchema).promise();
 };
 
