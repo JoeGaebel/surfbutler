@@ -8,7 +8,7 @@ pipelines:
         caches:
         - node
         script:
-        - cd messaging-service
+        - cd surfbutler
         - npm install
         - npm test
 
@@ -25,14 +25,14 @@ pipelines:
         - landing-page/dist/**
 
   - step:
-      name: Deploy API to Staging
+      name: Deploy Surfbutler to Production
       deployment: staging
       branches:
       - master
       caches:
       - node
       script:
-      - cd messaging-service
+      - cd surfbutler
       - npm install
       - npm test
       - apt-get update && apt-get install -y zip
