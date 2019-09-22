@@ -1,3 +1,6 @@
 **node_modules/
 target
 .idea
+.terraform
+*.env
+message-distribution-service.zip

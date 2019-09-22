@@ -4,13 +4,22 @@ pipelines:
   default:
   - parallel:
     - step:
-        name: Build and Test API
+        name: Build and Test Surfbutler
         caches:
         - node
         script:
         - cd surfbutler
         - npm install
         - npm test
+
+    - step:
+        name: Build and Test Message Distribution
+        chaches:
+          - node
+        script:
+          - cd message-distribution
+          - npm install
+          - npm test
 
     - step:
         name: Build and Test Frontend
@@ -25,7 +34,7 @@ pipelines:
         - landing-page/dist/**
 
   - step:
-      name: Deploy Surfbutler to Production
+      name: Deploy Surfbutler
       deployment: staging
       branches:
       - master
@@ -60,6 +69,43 @@ pipelines:
           COMMAND: 'alias'
           ALIAS: 'staging'
           VERSION: '${function_version}'
+
+  - step:
+      name: Deploy Message Distribution
+      deployment: staging
+      branches:
+        - master
+      caches:
+        - node
+      script:
+        - cd message-distribution
+        - npm install
+        - npm test
+        - apt-get update && apt-get install -y zip
+        - zip -r message-distribution-service.zip .
+        # Update lambda code and publish a new version
+        - pipe: atlassian/aws-lambda-deploy:0.2.1
+          variables:
+            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+            AWS_DEFAULT_REGION: $AWS_REGION
+            FUNCTION_NAME: $AWS_FUNCTION_NAME
+            COMMAND: 'update'
+            ZIP_FILE: 'message-distribution-service.zip'
+
+        # Read results from the update pipe into environment variables
+        - source pipe.meta.env
+
+        # Point an alias to the new lambda version
+        - pipe: atlassian/aws-lambda-deploy:0.2.1
+          variables:
+            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+            AWS_DEFAULT_REGION: $AWS_REGION
+            FUNCTION_NAME: $AWS_FUNCTION_NAME
+            COMMAND: 'alias'
+            ALIAS: 'staging'
+            VERSION: '${function_version}'
 
   - step:
       name: Deploy Frontend
