@@ -1,5 +1,6 @@
 const axios = require('axios');
 const getClosestTimeEntry = require('./utilities/timeEntry').getClosest;
+const getMorningWeather = require('./utilities/timeEntry').getMorningWeather;
 const emojiConverter = require('./utilities/emojiConverter');
 const toFeet = require('./utilities/numberUtils').toFeet;
 const axiosRetry = require('axios-retry');
@@ -8,7 +9,7 @@ axiosRetry(axios, { retries: 10, retryDelay: axiosRetry.exponentialDelay });
 
 exports.getSummary = async (name, spotId) => {
     const weatherResponse = await getWeatherData(spotId);
-    const sunriseTimestamp = getSunrise(weatherResponse).getTime() / 1000;
+    const sunriseTimestamp = getSunriseTimestamp(weatherResponse);
 
     const values = await Promise.all([
         getSwellSummary(spotId, sunriseTimestamp),
@@ -85,7 +86,7 @@ const getHighestSwell = (swells) => {
             highestSwell = swell;
         } else if (swell.height === highestHeight) {
             // logging so that we can verify if this can happen and improve which of the swells we display in that case
-            console.log('There where two equaly high swells:', swell,  'and ', highestSwell);
+            console.log('There where two equaly high swells:', swell, 'and ', highestSwell);
         }
     });
     return highestSwell;
@@ -111,18 +112,14 @@ const getWeatherData = async (spotId) => {
     return await queryEndpoint(weatherUrl);
 };
 
-const getSunrise = (weatherResponse) => {
-    return new Date(weatherResponse.sunlightTimes[1].sunrise * 1000);
+const getSunriseTimestamp = (weatherResponse) => {
+    return weatherResponse.sunlightTimes[1].sunrise;
 };
 
 const getWeatherSummary = (weatherResponse, sunriseTimestamp) => {
-    const sunriseTime = new Date(sunriseTimestamp * 1000).toLocaleTimeString([], {
-        timeZone: 'Australia/Sydney',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    });
-    const { temperature, condition } = getClosestTimeEntry(weatherResponse.weather, sunriseTimestamp);
+    const sunriseTime = new Date(sunriseTimestamp * 1000).toLocaleTimeString([],
+        { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', hour12: false });
+    const { temperature, condition } = getMorningWeather(weatherResponse.weather, sunriseTimestamp);
     return `${ parseInt(temperature) }º ${ emojiConverter.convertWeather(condition) }, sunrise ${ sunriseTime }`;
 };
 

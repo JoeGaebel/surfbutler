@@ -127,3 +127,22 @@ describe('getHighestSwell', () => {
         ])).toEqual({ direction: 174.38, height: 2.93, period: 11 });
     });
 });
+
+describe('getSunriseWeather', () => {
+    const getWeatherSummary = surfDataService.__get__('getWeatherSummary');
+
+    it('Get weather for the morning', () => {
+        const weatherEntries = {
+            weather: [
+                { 'timestamp': 1569607200, 'temperature': 17, 'condition': 'NIGHT_OVERCAST_RAIN' }, // 4am, yesterday
+                { 'timestamp': 1569621600, 'temperature': 26, 'condition': 'CLEAR_RAIN' }, // 8am, yesterday
+                { 'timestamp': 1569693600, 'temperature': 18, 'condition': 'NIGHT_OVERCAST_RAIN' }, // 4am
+                { 'timestamp': 1569708000, 'temperature': 28, 'condition': 'CLEAR_NO_RAIN' }, // 8am (wanted)
+                { 'timestamp': 1569722400, 'temperature': 27, 'condition': 'CLEAR_RAIN' }, // 12pm
+                { 'timestamp': 1569722400, 'temperature': 25, 'condition': 'CLEAR_RAIN' }, ] // 4pm
+        };
+        const sunrise = 1569699420; // 5:37am
+        const weatherSummary = getWeatherSummary(weatherEntries, sunrise);
+        expect(weatherSummary).toEqual('28º ☀️, sunrise 05:37');
+    });
+});

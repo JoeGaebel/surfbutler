@@ -12,6 +12,19 @@ exports.getTomorrowMorning = (timeEntries) => {
     return this.getClosest(timeEntries, tomorrowMorning);
 };
 
+exports.getMorningWeather = (weatherEntries, sunrise) => {
+    const morningWeatherIndex = getClosestElementIndex(weatherEntries, sunrise);
+    let morningWeather = weatherEntries[morningWeatherIndex];
+
+    for (let i = morningWeatherIndex; i < weatherEntries.length; i++) {
+        if (!weatherEntries[i].condition.includes('NIGHT')) {
+            morningWeather = weatherEntries[i];
+            break;
+        }
+    }
+    return morningWeather;
+};
+
 exports.getClosest = (timeEntries, time) => {
     let closestElement = timeEntries[0];
     let smallestTimestampDelta = Infinity;
@@ -24,4 +37,17 @@ exports.getClosest = (timeEntries, time) => {
     });
 
     return closestElement;
+};
+
+const getClosestElementIndex = (timeEntries, time) => {
+    let closestElementIndex = 0;
+    let smallestTimestampDelta = Infinity;
+
+    for (let i = 0; i < timeEntries.length; i++) {
+        if (Math.abs(time - timeEntries[i].timestamp) < smallestTimestampDelta) {
+            closestElementIndex = i;
+            smallestTimestampDelta = Math.abs(time - timeEntries[i].timestamp);
+        }
+    }
+    return closestElementIndex;
 };
