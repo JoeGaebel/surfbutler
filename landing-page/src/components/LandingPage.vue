@@ -59,7 +59,7 @@
                     class="button is-link"
                     @click="submit"
                 >
-                    I'm interested!
+                    Text me!
                 </button>
                 <div
                     v-if="isSuccess"
