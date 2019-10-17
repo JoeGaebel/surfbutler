@@ -1,14 +1,18 @@
 const rp = require('request-promise');
 const $ = require('cheerio');
+const moment = require('moment-timezone');
 
 exports.getRating = async (spotName) => {
     const url = mswURLs[spotName];
-
     const html = await rp(url);
-    const activeStars = $('.rating-large .active', html).length;
-    const inactiveStars = $('.rating-large .inactive', html).length;
 
-    return `${ '⭐️'.repeat(activeStars) }${ '✭'.repeat(inactiveStars) }`;
+    const tomorrowsDate = moment.tz('Australia/Sydney').add(1, 'day').format('DDMM');
+    const ratingRow = $(`tr[data-date$="${ tomorrowsDate }"] .table-forecast-rating`, html)[2];
+
+    const activeStars = $('.rating .active', ratingRow).length;
+    const inactiveStars = $('.rating .inactive', ratingRow).length;
+
+    return `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`;
 };
 
 const mswURLs = {

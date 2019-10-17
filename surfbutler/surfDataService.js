@@ -4,6 +4,7 @@ const getMorningWeather = require('./utilities/timeEntry').getMorningWeather;
 const emojiConverter = require('./utilities/emojiConverter');
 const toFeet = require('./utilities/numberUtils').toFeet;
 const axiosRetry = require('axios-retry');
+const { getRating } = require('./ratingService');
 
 axiosRetry(axios, { retries: 10, retryDelay: axiosRetry.exponentialDelay });
 
@@ -16,13 +17,14 @@ exports.getSummary = async (name, spotId) => {
         getWaveHeightSummary(spotId, sunriseTimestamp),
         getTideSummary(spotId, sunriseTimestamp),
         getWeatherSummary(weatherResponse, sunriseTimestamp),
-        getWindSummary(spotId)
+        getWindSummary(spotId),
+        getRating(name)
     ]);
-    const [swells, waves, tide, weather, wind] = values;
+    const [swells, waves, tide, weather, wind, rating] = values;
 
     return {
         name,
-        message: `${ name }, ${ weather }\n${ waves }, ${ tide }, the swell's ${ swells }, ${ wind }`
+        message: `${ name } ${ rating }\n${ weather }\n${ waves }, ${ tide }, the swell's ${ swells }, ${ wind }`
     };
 };
 

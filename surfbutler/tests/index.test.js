@@ -10,7 +10,7 @@ describe('handler', () => {
         console.log = jest.fn();
     });
 
-    it('gets the bondi and tamarama surf report', async () => {
+    it('gets the surf reports', async () => {
         getSummary.mockImplementation(beachName => Promise.resolve({
             name: beachName,
             message: `${ beachName } summary`
