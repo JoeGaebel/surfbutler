@@ -13,7 +13,7 @@ exports.handler = async () => {
     ]);
 
     const applicationId = 'efba3f1fc914421f88cb01c0efb16ffd';
-    const segments = await getSegmentIds(applicationId);
+    const segments = "SurfbutlerDevs";
 
     for (const summaryRequest of summaryRequests) {
         const { name, message } = summaryRequest;
