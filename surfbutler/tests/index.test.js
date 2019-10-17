@@ -5,7 +5,7 @@ const { send, getSegmentIds } = require('../messageService');
 jest.mock('../messageService');
 jest.mock('../surfDataService');
 
-xdescribe('handler', () => {
+describe('handler', () => {
     beforeEach(() => {
         console.log = jest.fn();
     });
