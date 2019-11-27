@@ -12,7 +12,10 @@ exports.getRating = async (spotName) => {
     const activeStars = $('.rating .active', ratingRow).length;
     const inactiveStars = $('.rating .inactive', ratingRow).length;
 
-    return `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`;
+    return {
+        string: `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`,
+        activeStars, inactiveStars
+    };
 };
 
 const mswURLs = {

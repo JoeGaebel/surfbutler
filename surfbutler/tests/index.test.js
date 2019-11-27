@@ -2,8 +2,8 @@ const { handler } = require('../index');
 const { getSummary } = require('../surfDataService');
 const { send, getSegmentIds } = require('../messageService');
 
-jest.mock('../messageService');
 jest.mock('../surfDataService');
+jest.mock('../messageService');
 
 describe('handler', () => {
     beforeEach(() => {
