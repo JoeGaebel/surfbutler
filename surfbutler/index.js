@@ -1,5 +1,6 @@
 const { getSegmentIds, send } = require('./messageService');
 const { getSummary } = require('./surfDataService');
+const { filter } = require('./sendingPolicy');
 
 exports.handler = async () => {
     const summaryRequests = await Promise.all([
@@ -16,11 +17,16 @@ exports.handler = async () => {
     const segments = await getSegmentIds(applicationId);
 
     for (const summaryRequest of summaryRequests) {
-        const { name, message } = summaryRequest;
+        const { name, message, meta } = summaryRequest;
         const key = name.replace(' ', '-');
+        if (filter(meta)) {
+            console.log(`Filtered out ${ key } with conditions: ${ JSON.stringify(summaryRequest) }`);
+            continue;
+        }
+
         const segment = segments[key];
         if (segment === undefined) {
-            console.error('Segment of key ', key, ' doesn\'t exist');
+            console.error(`Segment of key ${ key } doesn't exist`);
             continue;
         }
 

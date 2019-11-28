@@ -1,16 +1,15 @@
 const { handler } = require('../index');
 const { getSummary } = require('../surfDataService');
 const { send, getSegmentIds } = require('../messageService');
+const { filter } = require('../sendingPolicy');
 
-jest.mock('../surfDataService');
 jest.mock('../messageService');
+jest.mock('../surfDataService');
+jest.mock('../sendingPolicy');
 
 describe('handler', () => {
     beforeEach(() => {
         console.log = jest.fn();
-    });
-
-    it('gets the surf reports', async () => {
         getSummary.mockImplementation(beachName => Promise.resolve({
             name: beachName,
             message: `${ beachName } summary`
@@ -25,6 +24,20 @@ describe('handler', () => {
             'Freshwater': 'freshwater seg',
             'Manly': 'manly seg'
         }));
+    });
+
+    it('should not send when filtered', async () => {
+        filter.mockReturnValue(true);
+
+        await handler();
+
+        expect(getSummary)
+            .toHaveBeenCalledWith('Bondi', '5842041f4e65fad6a7708bf8');
+        expect(send).not.toHaveBeenCalled();
+    });
+
+    it('gets the surf reports', async () => {
+        filter.mockReturnValue(false);
 
         await handler();
 

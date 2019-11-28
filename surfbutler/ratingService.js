@@ -14,7 +14,7 @@ exports.getRating = async (spotName) => {
 
     return {
         string: `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`,
-        activeStars, inactiveStars
+        meta: { activeStars, inactiveStars }
     };
 };
 

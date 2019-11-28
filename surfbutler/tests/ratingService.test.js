@@ -1,4 +1,4 @@
-const { getRating, toRatingString } = require('../ratingService');
+const { getRating } = require('../ratingService');
 const moment = require('moment-timezone');
 const rp = require('request-promise');
 
@@ -71,8 +71,10 @@ describe('getRating', () => {
         const rating = await getRating();
         expect(rating).toEqual({
             string: '★★☆',
-            activeStars: 2,
-            inactiveStars: 1
+            meta: {
+                activeStars: 2,
+                inactiveStars: 1
+            }
         });
     });
 
