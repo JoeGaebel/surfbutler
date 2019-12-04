@@ -8,7 +8,7 @@
                 Get a text the night before it's pumping
             </div>
             <div class="call-to-action">
-                Sign up to receive free surf reports for the beaches you surf. Coming soon!
+                Sign up to receive free surf reports for the beaches you surf.
             </div>
             <div class="form">
                 <div class="checkboxes columns is-mobile">
