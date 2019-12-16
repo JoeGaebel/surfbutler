@@ -6,7 +6,8 @@
     "template-curly-spacing": ["error", "always"],
     "quotes": ["error", "single"],
     "no-console": ["off", "always"],
-    "prefer-const": ["error"]
+    "prefer-const": ["error"],
+    "prefer-arrow-callback": ["error"]
   },
   "parserOptions": {
     "ecmaVersion": 2017

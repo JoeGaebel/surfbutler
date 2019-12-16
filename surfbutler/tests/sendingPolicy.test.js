@@ -1,7 +1,7 @@
 const { filter } = require('../sendingPolicy');
 
-describe('filter', function () {
-    it('should filter bad surf reports', function () {
+describe('filter', () => {
+    it('should filter bad surf reports', () => {
         expect(filter({
             activeStars: 0,
             inactiveStars: 0
@@ -12,7 +12,7 @@ describe('filter', function () {
         })).toBe(true);
     });
 
-    it('should not filter good surf reports', function () {
+    it('should not filter good surf reports', () => {
         expect(filter({
             activeStars: 5,
             inactiveStars: 0
