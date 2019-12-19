@@ -7,56 +7,53 @@ const { convertDirection, convertWeather } = require('../utilities/emojiConverte
 
 axiosRetry(axios, { retries: 10, retryDelay: axiosRetry.exponentialDelay });
 
-class SurflineDataSource {
-    async getBeachData(name, spotId) {
+const getBeachData = async (name, spotId) => {
+    const weatherResponse = await getWeatherData(spotId);
+    const sunriseTimestamp = getSunriseTimestamp(weatherResponse);
 
-        const weatherResponse = await getWeatherData(spotId);
-        const sunriseTimestamp = getSunriseTimestamp(weatherResponse);
+    const values = await Promise.all([
+        getWaveHeightSummary(spotId, sunriseTimestamp),
+        getSwellSummary(spotId, sunriseTimestamp),
+        getTideSummary(spotId, sunriseTimestamp),
+        getWeatherSummary(weatherResponse, sunriseTimestamp),
+        getWindSummary(spotId, sunriseTimestamp),
+    ]);
 
-        const values = await Promise.all([
-            getWaveHeightSummary(spotId, sunriseTimestamp),
-            getSwellSummary(spotId, sunriseTimestamp),
-            getTideSummary(spotId, sunriseTimestamp),
-            getWeatherSummary(weatherResponse, sunriseTimestamp),
-            getWindSummary(spotId),
-        ]);
-
-        const [
-            heightInFeet,
-            {
-                swellHeight,
-                period,
-                swellDirection
-            },
-            { tideType },
-            {
-                temperature,
-                weatherEmoji,
-                sunriseTime,
-            },
-            {
-                windSpeed,
-                windDirection
-            }
-        ] = values;
-
-        return new BeachData({
-            name,
-            heightInFeet,
-            swellHeight,
-            period,
-            swellDirection,
+    const [
+        waveHeightInFeet,
+        {
+            swellHeightInFeet,
+            swellPeriod,
+            swellDirectionEmoji
+        },
+        { tideType },
+        {
             temperature,
             weatherEmoji,
             sunriseTime,
+        },
+        {
             windSpeed,
-            windDirection,
-            tideType
-        });
-    }
-}
+            windDirectionEmoji
+        }
+    ] = values;
 
-exports.SurflineDataSource = SurflineDataSource;
+    return new BeachData({
+        name,
+        waveHeightInFeet,
+        swellHeightInFeet,
+        swellPeriod,
+        swellDirectionEmoji,
+        temperature,
+        weatherEmoji,
+        sunriseTime,
+        windSpeed,
+        windDirectionEmoji,
+        tideType
+    });
+};
+
+exports.getBeachData = getBeachData;
 
 const getSwellSummary = async (spotId, sunriseTimestamp) => {
     const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=2&intervalHours=4&maxHeights=false`;
@@ -64,9 +61,9 @@ const getSwellSummary = async (spotId, sunriseTimestamp) => {
     const { height, period, direction } = getSwell(getClosest(swellResponse.wave, sunriseTimestamp).swells);
 
     return {
-        swellHeight: toFeet(height),
-        period,
-        swellDirection: convertDirection(direction)
+        swellHeightInFeet: toFeet(height),
+        swellPeriod: period,
+        swellDirectionEmoji: convertDirection(direction)
     };
 };
 
@@ -165,7 +162,7 @@ const getWindSummary = async (spotId, sunriseTimestamp) => {
 
     return {
         windSpeed: parseInt(speed),
-        windDirection: convertDirection(direction)
+        windDirectionEmoji: convertDirection(direction)
     };
 };
 

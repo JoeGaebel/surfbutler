@@ -1,26 +1,26 @@
 class BeachData {
     constructor({
-                    heightInFeet,
-                    swellHeight,
-                    period,
-                    swellDirection,
+                    waveHeightInFeet,
+                    swellHeightInFeet,
+                    swellPeriod,
+                    swellDirectionEmoji,
                     name,
                     weatherEmoji,
                     windSpeed,
-                    windDirection,
+                    windDirectionEmoji,
                     rating,
                     temperature,
                     sunriseTime,
                     tideType,
                 }) {
-        this.heightInFeet = heightInFeet;
-        this.period = period;
-        this.swellDirection = swellDirection;
+        this.waveHeightInFeet = waveHeightInFeet;
+        this.swellPeriod = swellPeriod;
+        this.swellDirectionEmoji = swellDirectionEmoji;
         this.name = name;
-        this.swellHeight = swellHeight;
+        this.swellHeightInFeet = swellHeightInFeet;
         this.weatherEmoji = weatherEmoji;
         this.windSpeed = windSpeed;
-        this.windDirection = windDirection;
+        this.windDirectionEmoji = windDirectionEmoji;
         this.rating = rating;
         this.temperature = temperature;
         this.sunriseTime = sunriseTime;
