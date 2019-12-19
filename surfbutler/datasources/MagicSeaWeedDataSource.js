@@ -1,8 +1,10 @@
+const { BeachData } = require('./BeachData');
+
 const rp = require('request-promise');
 const $ = require('cheerio');
 const moment = require('moment-timezone');
 
-exports.getRating = async (spotName) => {
+exports.getBeachData = async (spotName) => {
     const url = mswURLs[spotName];
     const html = await rp(url);
 
@@ -12,10 +14,12 @@ exports.getRating = async (spotName) => {
     const activeStars = $('.rating .active', ratingRow).length;
     const inactiveStars = $('.rating .inactive', ratingRow).length;
 
-    return {
-        string: `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`,
-        meta: { activeStars, inactiveStars }
-    };
+    return new BeachData({
+        rating: {
+            string: `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`,
+            meta: { activeStars, inactiveStars }
+        }
+    });
 };
 
 const mswURLs = {

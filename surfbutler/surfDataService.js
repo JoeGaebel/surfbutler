@@ -1,16 +1,20 @@
-const { getRating } = require('./ratingService');
+const MagicSeaWeedDataSource = require('./datasources/MagicSeaWeedDataSource');
 const SurflineDataSource = require('./datasources/SurflineDataSource');
 
 
 exports.getSummary = async (name, spotId) => {
-    const beachData = await SurflineDataSource.getBeachData(name, spotId);
-    const rating = await getRating(name);
+    const [surflineBeachData, magicSeaWeedBeachData] = await Promise.all([
+        SurflineDataSource.getBeachData(name, spotId),
+        MagicSeaWeedDataSource.getBeachData(name)
+    ]);
 
-    const weather = getFormattedWeather(beachData);
-    const waves = getFormattedWaveHeight(beachData);
-    const tide = getFormattedTide(beachData);
-    const swells = getFormattedSwells(beachData);
-    const wind = getFormattedWind(beachData);
+    const { rating } = magicSeaWeedBeachData;
+
+    const weather = getFormattedWeather(surflineBeachData);
+    const waves = getFormattedWaveHeight(surflineBeachData);
+    const tide = getFormattedTide(surflineBeachData);
+    const swells = getFormattedSwells(surflineBeachData);
+    const wind = getFormattedWind(surflineBeachData);
 
     return {
         name,

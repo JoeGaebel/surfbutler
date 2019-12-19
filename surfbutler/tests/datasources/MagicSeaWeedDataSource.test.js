@@ -1,10 +1,10 @@
-const { getRating } = require('../ratingService');
+const { getBeachData } = require('../../datasources/MagicSeaWeedDataSource');
 const moment = require('moment-timezone');
 const rp = require('request-promise');
 
 jest.mock('request-promise');
 
-describe('getRating', () => {
+describe('getBeachData#rating', () => {
     const todaysDate = moment.tz('Australia/Sydney').format('DDMM');
     const tomorrowsDate = moment.tz('Australia/Sydney').add(1, 'day').format('DDMM');
     const dayAfterDate = moment.tz('Australia/Sydney').add(2, 'day').format('DDMM');
@@ -68,7 +68,7 @@ describe('getRating', () => {
     });
 
     it('returns the rating for tomorrow at 6am', async () => {
-        const rating = await getRating();
+        const { rating } = await getBeachData();
         expect(rating).toEqual({
             string: '★★☆',
             meta: {
@@ -88,7 +88,7 @@ describe('getRating', () => {
         'Bronte'
     ])('gets uses the right MSW url for %p', async (beach) => {
         rp.mockReset();
-        await getRating(beach);
+        await getBeachData(beach);
         expect(rp).toHaveBeenCalledWith(mswURLs[beach]);
     });
 });
