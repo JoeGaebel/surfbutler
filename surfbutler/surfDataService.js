@@ -1,5 +1,5 @@
 const { getRating } = require('./ratingService');
-const SurflineDataSource = require('./datasources/surflineDataSource');
+const SurflineDataSource = require('./datasources/SurflineDataSource');
 
 
 exports.getSummary = async (name, spotId) => {

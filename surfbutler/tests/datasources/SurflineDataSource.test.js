@@ -1,4 +1,4 @@
-const { getBeachData } = require('../../datasources/surflineDataSource');
+const { getBeachData } = require('../../datasources/SurflineDataSource');
 const SurflineDataSource = require('rewire')('../../datasources/surflineDataSource');
 
 describe('SurflineDataSource', () => {
