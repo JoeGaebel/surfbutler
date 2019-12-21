@@ -18,7 +18,7 @@ describe('SurflineDataSource', () => {
         expect(beachData.weatherEmoji).toMatch(new RegExp('(☀️|🌤|⛅|☁️|🌦|🌧|✨)'));
         expect(beachData.temperature).toBeGreaterThanOrEqual(0);
         expect(beachData.sunriseTime).toMatch(new RegExp('^([0-1][0-9]|[2][0-3]):([0-5][0-9])$'));
-        expect(beachData.windSpeed).toBeGreaterThanOrEqual(0);
+        expect(beachData.windSpeedInKnots).toBeGreaterThanOrEqual(0);
         expect(beachData.windDirectionEmoji).toMatch(new RegExp('(⬅️|⬆️|➡️|⬇️|↙️|↖️|↗️|↘️)'));
         expect(beachData.tideType).toMatch(new RegExp('(LOW|NORMAL|HIGH)'));
     });

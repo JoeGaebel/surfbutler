@@ -6,7 +6,7 @@ class BeachData {
                     swellDirectionEmoji,
                     name,
                     weatherEmoji,
-                    windSpeed,
+                    windSpeedInKnots,
                     windDirectionEmoji,
                     rating,
                     temperature,
@@ -19,7 +19,7 @@ class BeachData {
         this.name = name;
         this.swellHeightInFeet = swellHeightInFeet;
         this.weatherEmoji = weatherEmoji;
-        this.windSpeed = windSpeed;
+        this.windSpeedInKnots = windSpeedInKnots;
         this.windDirectionEmoji = windDirectionEmoji;
         this.rating = rating;
         this.temperature = temperature;

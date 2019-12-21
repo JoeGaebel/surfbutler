@@ -1,4 +1,5 @@
 const { BeachData } = require('./BeachData');
+const { round } = require('../utilities/numberUtils');
 
 const rp = require('request-promise');
 const $ = require('cheerio');
@@ -9,17 +10,70 @@ exports.getBeachData = async (spotName) => {
     const html = await rp(url);
 
     const tomorrowsDate = moment.tz('Australia/Sydney').add(1, 'day').format('DDMM');
-    const ratingRow = $(`tr[data-date$="${ tomorrowsDate }"] .table-forecast-rating`, html)[2];
+    const sixAMRow = $(`tr[data-date$="${ tomorrowsDate }"]`, html)[2];
+
+    const waveHeightInFeet = getWaveHeight(sixAMRow);
+    const swellHeightInFeet = getSwellHeight(sixAMRow);
+    const swellPeriod = getSwellPeriod(sixAMRow);
+    const windSpeedInKnots = getWindSpeedInKnots(sixAMRow);
+    const rating = getRating(sixAMRow);
+
+    return new BeachData({
+        rating,
+        waveHeightInFeet,
+        swellHeightInFeet,
+        swellPeriod,
+        name: spotName,
+        windSpeedInKnots
+    });
+};
+
+const getWaveHeight = (row) => {
+    const field = $('.table-forecast-breaking-wave', row)
+        .text()
+        .replace('ft', '')
+        .trim();
+
+    if (field.includes('-')) {
+        const [lower, upper] = field.split('-');
+        return (parseInt(lower) + parseInt(upper)) / 2.0;
+    } else {
+        return parseInt(field);
+    }
+};
+
+const getSwellHeight = (row) => {
+    const heightString = $($('.background-gray-lightest', row)[0])
+        .text()
+        .replace('ft', '');
+
+    return parseInt(heightString);
+};
+
+const getSwellPeriod = (row) => {
+    const periodString = $($('.background-gray-lightest', row)[1])
+        .text()
+        .replace('s', '');
+
+    return parseInt(periodString);
+};
+
+const getWindSpeedInKnots = (row) => {
+    const windSpeedString = $('.table-forecast-wind .text-right', row).text();
+
+    const mphToKnots = 0.868976;
+    return round(parseInt(windSpeedString) * mphToKnots);
+};
+
+const getRating = (sixAMRow) => {
+    const ratingRow = $('.table-forecast-rating', sixAMRow);
 
     const activeStars = $('.rating .active', ratingRow).length;
     const inactiveStars = $('.rating .inactive', ratingRow).length;
-
-    return new BeachData({
-        rating: {
-            string: `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`,
-            meta: { activeStars, inactiveStars }
-        }
-    });
+    return {
+        string: `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`,
+        meta: { activeStars, inactiveStars }
+    };
 };
 
 const mswURLs = {

@@ -33,7 +33,7 @@ const getBeachData = async (name, spotId) => {
             sunriseTime,
         },
         {
-            windSpeed,
+            windSpeedInKnots,
             windDirectionEmoji
         }
     ] = values;
@@ -47,7 +47,7 @@ const getBeachData = async (name, spotId) => {
         temperature,
         weatherEmoji,
         sunriseTime,
-        windSpeed,
+        windSpeedInKnots,
         windDirectionEmoji,
         tideType
     });
@@ -161,7 +161,7 @@ const getWindSummary = async (spotId, sunriseTimestamp) => {
     const { direction, speed } = getClosest(windResponse.wind, sunriseTimestamp);
 
     return {
-        windSpeed: parseInt(speed),
+        windSpeedInKnots: parseInt(speed),
         windDirectionEmoji: convertDirection(direction)
     };
 };

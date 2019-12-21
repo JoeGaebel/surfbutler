@@ -31,5 +31,5 @@ const getFormattedWeather = ({ sunriseTime, temperature, weatherEmoji }) =>
     `${ temperature }º ${ weatherEmoji }, sunrise ${ sunriseTime }`;
 const getFormattedSwells = ({ swellHeightInFeet, swellPeriod, swellDirectionEmoji }) =>
     `${ swellHeightInFeet }ft at ${ swellPeriod }s ${ swellDirectionEmoji }`;
-const getFormattedWind = ({ windSpeed, windDirectionEmoji }) =>
-    `wind at ${ windSpeed }kts ${ windDirectionEmoji }`;
+const getFormattedWind = ({ windSpeedInKnots, windDirectionEmoji }) =>
+    `wind at ${ windSpeedInKnots }kts ${ windDirectionEmoji }`;

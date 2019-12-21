@@ -1,94 +1,84 @@
 const { getBeachData } = require('../../datasources/MagicSeaWeedDataSource');
-const moment = require('moment-timezone');
+const { generateFixture } = require('./magicSeaWeedFixtureGenerator');
 const rp = require('request-promise');
 
 jest.mock('request-promise');
 
-describe('getBeachData#rating', () => {
-    const todaysDate = moment.tz('Australia/Sydney').format('DDMM');
-    const tomorrowsDate = moment.tz('Australia/Sydney').add(1, 'day').format('DDMM');
-    const dayAfterDate = moment.tz('Australia/Sydney').add(2, 'day').format('DDMM');
+describe('MagicSeaWeedDataSource', () => {
+    describe('getBeachData#rating', () => {
+        beforeEach(() => {
+            const fixture = generateFixture();
+            rp.mockReturnValue(Promise.resolve(fixture));
+        });
 
-    const wrongDayRating = `<ul class="rating clearfix">
-            <li class="active"><i class="glyphicon glyphicon-star"></i></li>
-            <li class="active"><i class="glyphicon glyphicon-star"></i></li>
-            <li class="active"><i class="glyphicon glyphicon-star"></i></li>
-            <li class="active"><i class="glyphicon glyphicon-star"></i></li>
-            <li class="active"><i class="glyphicon glyphicon-star"></i></li>
-        </ul>`;
-
-    const wrongTimeRating = `<ul class="rating clearfix">
-        <li class="inactive "><i class="glyphicon glyphicon-star"></i></li>
-        <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-        <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-        <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-        <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-    </ul>`;
-
-    const fakeMSWHTML = `<html>
-        <table>
-            <tr data-date="5${ todaysDate }">
-                <td class="table-forecast-rating td-nowrap">${ wrongDayRating }</td>
-                <td class="table-forecast-rating td-nowrap">${ wrongDayRating }</td>
-                <td class="table-forecast-rating td-nowrap">${ wrongTimeRating }</td>
-            </tr> 
-            <tr data-date="5${ tomorrowsDate }">
-                <td class="table-forecast-rating td-nowrap">${ wrongDayRating }</td>
-                <td class="table-forecast-rating td-nowrap">${ wrongDayRating }</td>
-                <td class="table-forecast-rating td-nowrap">
-                    <ul class="rating clearfix">
-                        <li class="active "><i class="glyphicon glyphicon-star"></i></li>
-                        <li class="active"><i class="glyphicon glyphicon-star"></i></li>
-                        <li class="inactive"><i class="glyphicon glyphicon-star"></i></li>
-                        <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-                        <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-                    </ul>
-                </td>
-            </tr>
-            <tr data-date="5${ dayAfterDate }">
-                <td class="table-forecast-rating td-nowrap">${ wrongDayRating }</td>
-                <td class="table-forecast-rating td-nowrap">${ wrongDayRating }</td>
-                <td class="table-forecast-rating td-nowrap">${ wrongTimeRating }</td>
-            </tr>
-        </table>
-    </html>`;
-
-    const mswURLs = {
-        'Dee Why': 'https://magicseaweed.com/Dee-Why-Point-Surf-Report/999/',
-        'Curl Curl': 'https://magicseaweed.com/Curl-Curl-Surf-Report/1000/',
-        'Freshwater': 'https://magicseaweed.com/Freshwater-Surf-Report/4997/',
-        'Manly': 'https://magicseaweed.com/Sydney-Manly-Surf-Report/526/',
-        'Bondi': 'https://magicseaweed.com/Sydney-Bondi-Surf-Report/996/',
-        'Tamarama': 'https://magicseaweed.com/Tamarama-Beach-Surf-Report/5402/',
-        'Bronte': 'https://magicseaweed.com/Bronte-Beach-Surf-Report/4579/',
-    };
-
-    beforeEach(() => {
-        rp.mockReturnValue(Promise.resolve(fakeMSWHTML));
-    });
-
-    it('returns the rating for tomorrow at 6am', async () => {
-        const { rating } = await getBeachData();
-        expect(rating).toEqual({
-            string: '★★☆',
-            meta: {
-                activeStars: 2,
-                inactiveStars: 1
-            }
+        it('returns the rating for tomorrow at 6am', async () => {
+            const { rating } = await getBeachData('some spot name');
+            expect(rating).toEqual({
+                string: '★★☆',
+                meta: {
+                    activeStars: 2,
+                    inactiveStars: 1
+                }
+            });
         });
     });
 
-    it.each([
-        'Dee Why',
-        'Curl Curl',
-        'Freshwater',
-        'Manly',
-        'Bondi',
-        'Tamarama',
-        'Bronte'
-    ])('gets uses the right MSW url for %p', async (beach) => {
-        rp.mockReset();
-        await getBeachData(beach);
-        expect(rp).toHaveBeenCalledWith(mswURLs[beach]);
+    describe('MSW Urls', () => {
+        const mswURLs = {
+            'Dee Why': 'https://magicseaweed.com/Dee-Why-Point-Surf-Report/999/',
+            'Curl Curl': 'https://magicseaweed.com/Curl-Curl-Surf-Report/1000/',
+            'Freshwater': 'https://magicseaweed.com/Freshwater-Surf-Report/4997/',
+            'Manly': 'https://magicseaweed.com/Sydney-Manly-Surf-Report/526/',
+            'Bondi': 'https://magicseaweed.com/Sydney-Bondi-Surf-Report/996/',
+            'Tamarama': 'https://magicseaweed.com/Tamarama-Beach-Surf-Report/5402/',
+            'Bronte': 'https://magicseaweed.com/Bronte-Beach-Surf-Report/4579/',
+        };
+
+        beforeEach(() => {
+            beforeEach(() => {
+                rp.mockReturnValue(Promise.resolve(''));
+            });
+        });
+
+        it.each([
+            'Dee Why',
+            'Curl Curl',
+            'Freshwater',
+            'Manly',
+            'Bondi',
+            'Tamarama',
+            'Bronte'
+        ])('gets uses the right MSW url for %p', async (beach) => {
+            rp.mockReset();
+            await getBeachData(beach);
+            expect(rp).toHaveBeenCalledWith(mswURLs[beach]);
+        });
+    });
+
+    describe('getBeachData#wave and swell data', () => {
+        it('returns the correct beach data ', async () => {
+            const fixture = generateFixture();
+            rp.mockReturnValue(Promise.resolve(fixture));
+
+            const beachData = await getBeachData('some spot name');
+
+            expect(beachData.waveHeightInFeet).toEqual(4);
+            expect(beachData.swellHeightInFeet).toEqual(7);
+            expect(beachData.swellPeriod).toEqual(8);
+            expect(beachData.name).toEqual('some spot name');
+            expect(beachData.windSpeedInKnots).toEqual(20);
+        });
+
+        describe('when the wave height is a single number', () => {
+            beforeEach(() => {
+                const fixture = generateFixture({ withSingleWaveHeight: true });
+                rp.mockReturnValue(Promise.resolve(fixture));
+            });
+
+            it('returns that height', async () => {
+                const beachData = await getBeachData('some spot name');
+                expect(beachData.waveHeightInFeet).toEqual(2);
+            });
+        });
     });
 });
