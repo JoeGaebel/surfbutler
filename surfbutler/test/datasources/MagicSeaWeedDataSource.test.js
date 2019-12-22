@@ -67,6 +67,7 @@ describe('MagicSeaWeedDataSource', () => {
             expect(beachData.swellPeriod).toEqual(8);
             expect(beachData.name).toEqual('some spot name');
             expect(beachData.windSpeedInKnots).toEqual(20);
+            expect(beachData.dataSource).toEqual('msw');
         });
 
         describe('when the wave height is a single number', () => {

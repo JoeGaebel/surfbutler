@@ -12,6 +12,7 @@ class BeachData {
                     temperature,
                     sunriseTime,
                     tideType,
+                    dataSource
                 }) {
         this.waveHeightInFeet = waveHeightInFeet;
         this.swellPeriod = swellPeriod;
@@ -24,6 +25,7 @@ class BeachData {
         this.rating = rating;
         this.temperature = temperature;
         this.sunriseTime = sunriseTime;
+        this.dataSource = dataSource;
         this.tideType = tideType;
     }
 }

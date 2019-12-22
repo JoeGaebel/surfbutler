@@ -24,7 +24,8 @@ exports.getBeachData = async (spotName) => {
         swellHeightInFeet,
         swellPeriod,
         name: spotName,
-        windSpeedInKnots
+        windSpeedInKnots,
+        dataSource: 'msw'
     });
 };
 

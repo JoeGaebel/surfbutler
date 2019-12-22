@@ -49,7 +49,8 @@ const getBeachData = async (name, spotId) => {
         sunriseTime,
         windSpeedInKnots,
         windDirectionEmoji,
-        tideType
+        tideType,
+        dataSource: 'surfline'
     });
 };
 

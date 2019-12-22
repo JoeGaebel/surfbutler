@@ -21,6 +21,7 @@ describe('SurflineDataSource', () => {
         expect(beachData.windSpeedInKnots).toBeGreaterThanOrEqual(0);
         expect(beachData.windDirectionEmoji).toMatch(new RegExp('(⬅️|⬆️|➡️|⬇️|↙️|↖️|↗️|↘️)'));
         expect(beachData.tideType).toMatch(new RegExp('(LOW|NORMAL|HIGH)'));
+        expect(beachData.dataSource).toEqual('surfline');
     });
 
     describe('getSwell', () => {
