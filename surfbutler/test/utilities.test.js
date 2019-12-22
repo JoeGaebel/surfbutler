@@ -1,10 +1,10 @@
-jest.mock('../utilities/clock');
-const getCurrentTimestamp = require('../utilities/clock').getCurrentTimestamp;
-const getCurrentEntry = require('../utilities/timeEntry').getCurrentEntry;
-const convertDirection = require('../utilities/emojiConverter').convertDirection;
-const convertWeather = require('../utilities/emojiConverter').convertWeather;
-const toFeet = require('../utilities/numberUtils').toFeet;
-const round = require('../utilities/numberUtils').round;
+jest.mock('../src/utilities/clock');
+const getCurrentTimestamp = require('../src/utilities/clock').getCurrentTimestamp;
+const getCurrentEntry = require('../src/utilities/timeEntry').getCurrentEntry;
+const convertDirection = require('../src/utilities/emojiConverter').convertDirection;
+const convertWeather = require('../src/utilities/emojiConverter').convertWeather;
+const toFeet = require('../src/utilities/numberUtils').toFeet;
+const round = require('../src/utilities/numberUtils').round;
 
 describe('getCurrentEntry', () => {
     const currentTime = 1552068000000;

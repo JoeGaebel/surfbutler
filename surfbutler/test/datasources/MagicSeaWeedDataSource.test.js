@@ -1,4 +1,4 @@
-const { getBeachData } = require('../../datasources/MagicSeaWeedDataSource');
+const { getBeachData } = require('../../src/datasources/MagicSeaWeedDataSource');
 const { generateFixture } = require('./magicSeaWeedFixtureGenerator');
 const rp = require('request-promise');
 

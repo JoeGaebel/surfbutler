@@ -36,7 +36,7 @@ pipelines:
       - yarn install
       - yarn test
       - apt-get update && apt-get install -y zip
-      - zip -r surfbutler.zip .
+      - zip -r surfbutler.zip src
       # Update lambda code and publish a new version
       - pipe: atlassian/aws-lambda-deploy:0.2.1
         variables:

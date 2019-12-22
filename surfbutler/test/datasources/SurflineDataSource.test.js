@@ -1,5 +1,5 @@
-const { getBeachData } = require('../../datasources/SurflineDataSource');
-const SurflineDataSource = require('rewire')('../../datasources/SurflineDataSource');
+const { getBeachData } = require('../../src/datasources/SurflineDataSource');
+const SurflineDataSource = require('rewire')('../../src/datasources/SurflineDataSource');
 
 describe('SurflineDataSource', () => {
     beforeEach(() => {

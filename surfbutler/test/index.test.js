@@ -1,11 +1,11 @@
-const { handler } = require('../index');
-const { getSummary } = require('../surfDataService');
-const { send, getSegmentIds } = require('../messageService');
-const { filter } = require('../sendingPolicy');
+const { handler } = require('../src');
+const { getSummary } = require('../src/surfDataService');
+const { send, getSegmentIds } = require('../src/messageService');
+const { filter } = require('../src/sendingPolicy');
 
-jest.mock('../messageService');
-jest.mock('../surfDataService');
-jest.mock('../sendingPolicy');
+jest.mock('../src/messageService');
+jest.mock('../src/surfDataService');
+jest.mock('../src/sendingPolicy');
 
 describe('handler', () => {
     beforeEach(() => {

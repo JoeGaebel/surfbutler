@@ -1,4 +1,4 @@
-const { filter } = require('../sendingPolicy');
+const { filter } = require('../src/sendingPolicy');
 
 describe('filter', () => {
     it('should filter bad surf reports', () => {

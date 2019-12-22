@@ -3,7 +3,7 @@ const moment = require('moment');
 const cheerio = require('cheerio');
 
 const generateFixture = ({ withSingleWaveHeight } = {}) => {
-    const dayFixture = getFile('./tests/datasources/magicSeaWeedDayFixture.html');
+    const dayFixture = getFile('./test/datasources/magicSeaWeedDayFixture.html');
 
     const todaysDate = moment.tz('Australia/Sydney').format('DDMM');
     const tomorrowsDate = moment.tz('Australia/Sydney').add(1, 'day').format('DDMM');
