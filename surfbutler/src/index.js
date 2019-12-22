@@ -30,8 +30,8 @@ exports.handler = async () => {
             continue;
         }
 
-        const response = await send({ segment, message, key, applicationId });
-        console.log(response);
-        console.log(message);
+        // const response = await send({ segment, message, key, applicationId });
+        // console.log(response);
+        // console.log(message);
     }
 };
