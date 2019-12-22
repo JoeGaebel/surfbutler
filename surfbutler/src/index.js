@@ -1,4 +1,4 @@
-const { getSegmentIds, send } = require('./messageService');
+const { getSegmentIds } = require('./messageService');
 const { getSummary } = require('./surfDataService');
 const { filter } = require('./sendingPolicy');
 
@@ -17,6 +17,7 @@ exports.handler = async () => {
     const segments = await getSegmentIds(applicationId);
 
     for (const summaryRequest of summaryRequests) {
+        /* eslint-disable */
         const { name, message, meta } = summaryRequest;
         const key = name.replace(' ', '-');
         if (filter(meta)) {
@@ -32,6 +33,7 @@ exports.handler = async () => {
 
         // const response = await send({ segment, message, key, applicationId });
         // console.log(response);
-        // console.log(message);
+        console.log(message);
+        /* eslint-enable */
     }
 };
