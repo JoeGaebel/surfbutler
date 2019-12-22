@@ -7,7 +7,7 @@ jest.mock('../src/messageService');
 jest.mock('../src/surfDataService');
 jest.mock('../src/sendingPolicy');
 
-xdescribe('handler', () => {
+describe('handler', () => {
     beforeEach(() => {
         console.log = jest.fn();
         getSummary.mockImplementation(beachName => Promise.resolve({
