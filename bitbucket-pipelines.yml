@@ -32,9 +32,10 @@ pipelines:
       caches:
       - node
       script:
-      - cd surfbutler
       - apt-get update && apt-get install -y zip
-      - zip -r surfbutler.zip src
+      - cd surfbutler
+      - yarn install
+      - zip -r surfbutler.zip .
       # Update lambda code and publish a new version
       - pipe: atlassian/aws-lambda-deploy:0.2.1
         variables:
