@@ -58,16 +58,6 @@ const wrongDayRating = `
     <li class="active"><i class="glyphicon glyphicon-star"></i></li>
 </ul>`;
 
-const wrongTimeRating = `
-<!-- Wrong Time Rating -->
-<ul class="rating clearfix">
-    <li class="inactive "><i class="glyphicon glyphicon-star"></i></li>
-    <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-    <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-    <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-    <li class="placeholder"><i class="glyphicon glyphicon-star"></i></li>
-</ul>`;
-
 const correctDayCorrectTimeRating = `
 <!-- Correct Day, Correct Time Rating -->
 <ul class="rating clearfix">
@@ -84,13 +74,11 @@ const getWrongDayTable = (fixture, date) => fixture
 
 const getTomorrowTable = (fixture, date) => {
     const withCorrectRowInjected = replaceAt(
-        fixture, /RATING_ROW/g, correctDayCorrectTimeRating, 2
+        fixture, /RATING_ROW/g, correctDayCorrectTimeRating, 0
     );
 
     return withCorrectRowInjected
-        .replace(/RATING_ROW/g, wrongTimeRating)
         .replace(/DATE/g, date);
-
 };
 
 const replaceAt = (string, regexp, repl, at) => {

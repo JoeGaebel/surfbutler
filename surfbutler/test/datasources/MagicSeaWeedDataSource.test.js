@@ -62,11 +62,11 @@ describe('MagicSeaWeedDataSource', () => {
 
             const beachData = await getBeachData('some spot name');
 
-            expect(beachData.waveHeightInFeet).toEqual(4);
-            expect(beachData.swellHeightInFeet).toEqual(7);
+            expect(beachData.waveHeightInFeet).toEqual(2.5);
+            expect(beachData.swellHeightInFeet).toEqual(6);
             expect(beachData.swellPeriod).toEqual(8);
             expect(beachData.name).toEqual('some spot name');
-            expect(beachData.windSpeedInKnots).toEqual(20);
+            expect(beachData.windSpeedInKnots).toEqual(12);
             expect(beachData.dataSource).toEqual('msw');
         });
 

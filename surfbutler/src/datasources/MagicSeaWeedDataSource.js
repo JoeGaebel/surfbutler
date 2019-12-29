@@ -44,7 +44,7 @@ const getWaveHeight = (row) => {
 };
 
 const getSwellHeight = (row) => {
-    const heightString = $($('.background-gray-lightest', row)[0])
+    const heightString = $($('.background-gray-lighter', row)[0])
         .text()
         .replace('ft', '');
 
@@ -52,7 +52,7 @@ const getSwellHeight = (row) => {
 };
 
 const getSwellPeriod = (row) => {
-    const periodString = $($('.background-gray-lightest', row)[1])
+    const periodString = $($('.background-gray-lighter', row)[1])
         .text()
         .replace('s', '');
 
