@@ -48,7 +48,7 @@ const getSwellHeight = (row) => {
         .text()
         .replace('ft', '');
 
-    return parseInt(heightString);
+    return parseFloat(heightString);
 };
 
 const getSwellPeriod = (row) => {
