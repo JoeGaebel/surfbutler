@@ -57,9 +57,10 @@ const getBeachData = async (name, spotId) => {
 exports.getBeachData = getBeachData;
 
 const getSwellSummary = async (spotId, sunriseTimestamp) => {
-    const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=2&intervalHours=4&maxHeights=false`;
+    const swellUrl = `http://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${ spotId }&days=2&intervalHours=1&maxHeights=false`;
     const swellResponse = await queryEndpoint(swellUrl);
-    const { height, period, direction } = getSwell(getClosest(swellResponse.wave, sunriseTimestamp).swells);
+    const swellsAtSunrise = getClosest(swellResponse.wave, sunriseTimestamp).swells;
+    const { height, period, direction } = getSwell(swellsAtSunrise);
 
     return {
         swellHeightInFeet: toFeet(height),
@@ -70,18 +71,16 @@ const getSwellSummary = async (spotId, sunriseTimestamp) => {
 
 const getSwell = (swells) => {
     const relevantSwells = getOptimalScoreSwells(swells);
-    if (relevantSwells !== undefined && relevantSwells.length === 1) {
+    if (relevantSwells && relevantSwells.length === 1) {
         return relevantSwells[0];
     }
     return getHighestSwell(getRelevantSwells(swells));
 };
 
 const getOptimalScoreSwells = (swells) => {
-    const optimalScoreSwell = swells.filter(swell => {
-        return swell.optimalScore === 1;
-    });
+    const optimalScoreSwell = swells.filter(swell => swell.optimalScore === 1);
 
-    if (optimalScoreSwell === undefined || optimalScoreSwell.length === 0) {
+    if (!optimalScoreSwell || optimalScoreSwell.length === 0) {
         return swells;
     }
     return optimalScoreSwell;
@@ -162,7 +161,7 @@ const getWindSummary = async (spotId, sunriseTimestamp) => {
     const { direction, speed } = getClosest(windResponse.wind, sunriseTimestamp);
 
     return {
-        windSpeedInKnots: parseInt(speed),
+        windSpeedInKnots: parseInt(speed) * 0.539957,
         windDirectionEmoji: convertDirection(direction)
     };
 };

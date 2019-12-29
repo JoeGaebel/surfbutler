@@ -1,3 +1,4 @@
+const { round } = require('../../src/utilities/numberUtils');
 const { BeachData } = require('../../src/datasources/BeachData');
 const { getCombinedData } = require('../../src/combinator');
 
@@ -11,7 +12,7 @@ describe('Combinator#getCombinedData', () => {
                 string: '****',
                 meta: { active: 2, inactive: 3 }
             },
-            waveHeightInFeet: 2,
+            waveHeightInFeet: 2.5,
             swellHeightInFeet: 3,
             swellPeriod: 5,
             windSpeedInKnots: 20,
@@ -39,13 +40,14 @@ describe('Combinator#getCombinedData', () => {
         'windSpeedInKnots'
     ];
 
-    it.each(fieldsToAverage)('averages %p', (field) => {
+    it.each(fieldsToAverage)('averages %p to one decimal place', (field) => {
         const mswField = mswBeachData[field];
         const surflineField = surflineBeachData[field];
 
         const combinedField = getCombinedData(mswBeachData, surflineBeachData)[field];
 
-        expect(combinedField).toEqual((mswField + surflineField) / 2.0);
+        const roundedAndAveragedValue = round((mswField + surflineField) / 2.0, 1);
+        expect(combinedField).toEqual(roundedAndAveragedValue);
     });
 
     it.each(fieldsToAverage)('does not average if %p is missing', (field) => {

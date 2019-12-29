@@ -1,5 +1,6 @@
 const MagicSeaWeedDataSource = require('./datasources/MagicSeaWeedDataSource');
 const SurflineDataSource = require('./datasources/SurflineDataSource');
+const { getCombinedData } = require('./combinator');
 
 
 exports.getSummary = async (name, spotId) => {
@@ -8,13 +9,14 @@ exports.getSummary = async (name, spotId) => {
         MagicSeaWeedDataSource.getBeachData(name)
     ]);
 
-    const { rating } = magicSeaWeedBeachData;
+    const beachData = getCombinedData(surflineBeachData, magicSeaWeedBeachData);
 
-    const weather = getFormattedWeather(surflineBeachData);
-    const waves = getFormattedWaveHeight(surflineBeachData);
-    const tide = getFormattedTide(surflineBeachData);
-    const swells = getFormattedSwells(surflineBeachData);
-    const wind = getFormattedWind(surflineBeachData);
+    const { rating } = beachData;
+    const weather = getFormattedWeather(beachData);
+    const waves = getFormattedWaveHeight(beachData);
+    const tide = getFormattedTide(beachData);
+    const swells = getFormattedSwells(beachData);
+    const wind = getFormattedWind(beachData);
 
     return {
         name,

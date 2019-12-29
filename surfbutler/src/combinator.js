@@ -1,3 +1,4 @@
+const { round } = require('./utilities/numberUtils');
 const { BeachData } = require('./datasources/BeachData');
 
 exports.getCombinedData = (...beachDatas) => {
@@ -34,7 +35,7 @@ const averageData = (beachDatas) => {
 
     fieldsToCombine.forEach(field => {
         const numberOfDataSets = beachDatas.length - fieldExclusions[field];
-        combinedBeachData[field] /= numberOfDataSets;
+        combinedBeachData[field] = round(combinedBeachData[field] / numberOfDataSets, 1);
     });
 
     return combinedBeachData;

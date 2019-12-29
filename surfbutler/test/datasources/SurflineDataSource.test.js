@@ -134,7 +134,7 @@ describe('SurflineDataSource', () => {
     describe('getSunriseWeather', () => {
         const getWeatherSummary = SurflineDataSource.__get__('getWeatherSummary');
 
-        it('Get weather for the morning', () => {
+        it('gets the weather for the morning', () => {
             const weatherEntries = {
                 weather: [
                     { 'timestamp': 1569607200, 'temperature': 17, 'condition': 'NIGHT_OVERCAST_RAIN' }, // 4am, yesterday
