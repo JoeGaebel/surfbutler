@@ -4,7 +4,7 @@
   "description": "Get notified about the best beach to surf at.",
   "main": "src/index.js",
   "scripts": {
-    "debug": "node -e \"require('src/index').handler()\"",
+    "debug": "node -e \"require('./src/index').handler()\"",
     "test": "eslint . --fix && jest",
     "lint": "eslint . --fix"
   },
