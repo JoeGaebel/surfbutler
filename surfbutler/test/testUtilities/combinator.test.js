@@ -57,6 +57,25 @@ describe('Combinator#getCombinedData', () => {
         expect(combinedField).toEqual(surflineField);
     });
 
+    it.each(fieldsToAverage)('does not average if %p is a NaN', (field) => {
+        mswBeachData = new BeachData({
+            dataSource: 'msw',
+            rating: {
+                string: '****',
+                meta: { active: 2, inactive: 3 }
+            },
+            waveHeightInFeet: NaN,
+            swellHeightInFeet: NaN,
+            swellPeriod: NaN,
+            windSpeedInKnots: NaN,
+        });
+
+        const surflineField = surflineBeachData[field];
+        const combinedField = getCombinedData(mswBeachData, surflineBeachData)[field];
+
+        expect(combinedField).toEqual(surflineField);
+    });
+
     it('returns the rating from MagicSeaWeed', () => {
         expect(surflineBeachData.rating).toBeUndefined();
         const { rating } = getCombinedData(mswBeachData, surflineBeachData);

@@ -24,7 +24,7 @@ const averageData = (beachDatas) => {
         fieldsToCombine.forEach(field => {
             const fieldData = beachData[field];
 
-            if (typeof fieldData != 'number') {
+            if (!isFinite(fieldData)) {
                 fieldExclusions[field] += 1;
             } else {
                 combinedBeachData[field] += fieldData;
@@ -36,6 +36,7 @@ const averageData = (beachDatas) => {
         const numberOfDataSets = beachDatas.length - fieldExclusions[field];
         combinedBeachData[field] /= numberOfDataSets;
     });
+
     return combinedBeachData;
 };
 
