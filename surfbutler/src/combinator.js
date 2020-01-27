@@ -3,8 +3,6 @@ const { BeachData } = require('./datasources/BeachData');
 
 exports.getCombinedData = (...beachDatas) => {
     const combinedBeachData = averageData(beachDatas);
-
-    setMagicSeaWeedData(beachDatas, combinedBeachData);
     setSurflineData(beachDatas, combinedBeachData);
 
     return combinedBeachData;
@@ -14,7 +12,8 @@ const fieldsToCombine = [
     'waveHeightInFeet',
     'swellHeightInFeet',
     'swellPeriod',
-    'windSpeedInKnots'
+    'windSpeedInKnots',
+    'rating'
 ];
 
 const averageData = (beachDatas) => {
@@ -35,7 +34,13 @@ const averageData = (beachDatas) => {
 
     fieldsToCombine.forEach(field => {
         const numberOfDataSets = beachDatas.length - fieldExclusions[field];
-        combinedBeachData[field] = round(combinedBeachData[field] / numberOfDataSets, 1);
+
+        if (numberOfDataSets === 0) {
+            combinedBeachData[field] = 0;
+            console.error(`NO DATA FOUND FOR ${ field } ACROSS ALL DATA SOURCES`);
+        } else {
+            combinedBeachData[field] = round(combinedBeachData[field] / numberOfDataSets, 1);
+        }
     });
 
     return combinedBeachData;
@@ -52,11 +57,6 @@ const initializeFieldExclusions = () =>
         exclusions[field] = 0;
         return exclusions;
     }, {});
-
-const setMagicSeaWeedData = (beachDatas, combinedBeachData) => {
-    const mswData = beachDatas.find(data => data.dataSource === 'msw');
-    combinedBeachData.rating = mswData.rating;
-};
 
 const surflineFields = [
     'tideType',

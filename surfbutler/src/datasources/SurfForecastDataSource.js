@@ -20,13 +20,14 @@ exports.getBeachData = async (spotName) => {
         const stars = parseInt(tomorrowsFiveAMStar[0].attribs.alt);
 
         return new BeachData({
-            rating: { string: '★'.repeat(stars), meta: { stars } },
+            rating: stars / 2.0,
             name: spotName,
             dataSource: 'surfforecast'
         });
     } catch (e) {
+        console.error('Error when getting rating from SurfForecast', e);
         return new BeachData({
-            rating: { string: '', meta: { stars: NaN } },
+            rating: NaN,
             name: spotName,
             dataSource: 'surfforecast'
         });

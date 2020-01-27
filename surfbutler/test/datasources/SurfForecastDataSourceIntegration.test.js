@@ -8,8 +8,7 @@ describe('SurfForecastDataSource', () => {
     it('gets the data', async () => {
         const beachData = await getBeachData('Curl Curl');
 
-        expect(beachData.rating.string).toMatch(/[★]+/);
+        expect(beachData.rating).toBeFinite();
         expect(beachData.dataSource).toEqual('surfforecast');
-        expect(beachData.rating.meta).toEqual({ stars: expect.any(Number) });
     });
 });
