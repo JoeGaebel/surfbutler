@@ -6,17 +6,36 @@ jest.mock('request-promise');
 
 describe('MagicSeaWeedDataSource', () => {
     describe('getBeachData#rating', () => {
-        beforeEach(() => {
-            const fixture = generateFixture();
+        it('treats a windy star as a half star', async () => {
+            const fixture = generateFixture({ stars: { inactive: 1, active: 0 } });
             rp.mockReturnValue(Promise.resolve(fixture));
+
+            const { rating } = await getBeachData('some spot name');
+            expect(rating).toEqual(0.5);
         });
 
-        it('returns the rating for tomorrow at 6am', async () => {
+        it('handles 5 windy stars', async () => {
+            const fixture = generateFixture({ stars: { active: 0, inactive: 5 } });
+            rp.mockReturnValue(Promise.resolve(fixture));
+
             const { rating } = await getBeachData('some spot name');
-            expect(rating).toEqual({
-                activeStars: 2,
-                inactiveStars: 1
-            });
+            expect(rating).toEqual(2.5);
+        });
+
+        it('treats full stars as one unit', async () => {
+            const fixture = generateFixture({ stars: { active: 5, inactive: 0 } });
+            rp.mockReturnValue(Promise.resolve(fixture));
+
+            const { rating } = await getBeachData('some spot name');
+            expect(rating).toEqual(5);
+        });
+
+        it('blends the active and inactive stars', async () => {
+            const fixture = generateFixture({ stars: { active: 3, inactive: 2 } });
+            rp.mockReturnValue(Promise.resolve(fixture));
+
+            const { rating } = await getBeachData('some spot name');
+            expect(rating).toEqual(4);
         });
     });
 

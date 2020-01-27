@@ -8,10 +8,7 @@ describe('Combinator#getCombinedData', () => {
     beforeEach(() => {
         mswBeachData = new BeachData({
             dataSource: 'msw',
-            rating: {
-                string: '****',
-                meta: { active: 2, inactive: 3 }
-            },
+            rating: 3,
             waveHeightInFeet: 2.5,
             swellHeightInFeet: 3,
             swellPeriod: 5,
@@ -62,10 +59,7 @@ describe('Combinator#getCombinedData', () => {
     it.each(fieldsToAverage)('does not average if %p is a NaN', (field) => {
         mswBeachData = new BeachData({
             dataSource: 'msw',
-            rating: {
-                string: '****',
-                meta: { active: 2, inactive: 3 }
-            },
+            rating: 4,
             waveHeightInFeet: NaN,
             swellHeightInFeet: NaN,
             swellPeriod: NaN,

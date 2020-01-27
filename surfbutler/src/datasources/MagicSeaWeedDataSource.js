@@ -68,10 +68,10 @@ const getWindSpeedInKnots = (row) => {
 
 const getRating = (sixAMRow) => {
     const ratingRow = $('.table-forecast-rating', sixAMRow);
-
     const activeStars = $('.rating .active', ratingRow).length;
     const inactiveStars = $('.rating .inactive', ratingRow).length;
-    return { activeStars, inactiveStars };
+
+    return round(activeStars + inactiveStars / 2, 1);
 };
 
 const mswURLs = {

@@ -1,29 +1,11 @@
 const { filter } = require('../src/sendingPolicy');
 
 describe('filter', () => {
-    it('should filter bad surf reports', () => {
-        expect(filter({
-            activeStars: 0,
-            inactiveStars: 0
-        })).toBe(true);
-        expect(filter({
-            activeStars: 0,
-            inactiveStars: 1
-        })).toBe(true);
+    it.each([0, 1])('should surf ratings of %p', (badRating) => {
+        expect(filter(badRating)).toBe(true);
     });
 
-    it('should not filter good surf reports', () => {
-        expect(filter({
-            activeStars: 5,
-            inactiveStars: 0
-        })).toBe(false);
-        expect(filter({
-            activeStars: 1,
-            inactiveStars: 0
-        })).toBe(false);
-        expect(filter({
-            activeStars: 0,
-            inactiveStars: 2
-        })).toBe(false);
+    it.each([2, 3, 4, 5])('should not filter surf ratings of %p', (goodRating) => {
+        expect(filter(goodRating)).toBe(false);
     });
 });

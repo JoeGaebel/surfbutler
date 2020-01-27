@@ -25,8 +25,8 @@ exports.getSummary = async (name, spotId) => {
     };
 };
 
-const getFormattedRating = ({ rating: { activeStars, inactiveStars } }) =>
-    `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`;
+const getFormattedRating = ({ rating }) =>
+    '★'.repeat(rating);
 const getFormattedWaveHeight = ({ waveHeightInFeet }) =>
     `${ waveHeightInFeet }ft waves`;
 const getFormattedTide = ({ tideType }) =>
