@@ -13,7 +13,7 @@
     "url": "git+ssh://git@bitbucket.org/dreissenberger/surfbutler.git"
   },
   "keywords": [],
-  "author": "Daniel Reissenberger",
+  "author": "Daniel Reissenberger and Joe Gaebel",
   "license": "ISC",
   "homepage": "https://bitbucket.org/dreissenberger/surfbutler#readme",
   "dependencies": {
