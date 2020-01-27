@@ -6,12 +6,12 @@ describe('getSummary', () => {
     });
 
     it('summarizes', async () => {
-        const { name, message, meta } = await getSummary('Bondi', '5842041f4e65fad6a7708bf8');
+        const { name, message, rating } = await getSummary('Bondi', '5842041f4e65fad6a7708bf8');
         console.log(message);
 
         expect(name).toEqual('Bondi');
-        expect(meta.activeStars).toBeDefined();
-        expect(meta.inactiveStars).toBeDefined();
+        expect(rating.activeStars).toBeFinite();
+        expect(rating.inactiveStars).toBeFinite();
 
         expect(message).toMatch(new RegExp('Bondi [★|☆]+'));
         expect(message).toMatch(new RegExp('.*º.*, sunrise .*:'));

@@ -4,7 +4,10 @@ describe('MagicSeaWeedDataSource', () => {
     it('gets the data', async () => {
         const beachData = await getBeachData('Bondi');
 
-        expect(beachData.rating.string).toMatch(/[★|☆]+/);
+        expect(beachData.rating).toEqual({
+            activeStars: expect.any(Number),
+            inactiveStars: expect.any(Number)
+        });
         expect(beachData.waveHeightInFeet).toBeFinite();
         expect(beachData.swellHeightInFeet).toBeFinite();
         expect(beachData.swellPeriod).toBeFinite();

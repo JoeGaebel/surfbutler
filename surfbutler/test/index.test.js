@@ -9,10 +9,13 @@ jest.mock('../src/sendingPolicy');
 
 describe('handler', () => {
     beforeEach(() => {
+        jest.resetAllMocks();
+
         console.log = jest.fn();
         getSummary.mockImplementation(beachName => Promise.resolve({
             name: beachName,
-            message: `${ beachName } summary`
+            message: `${ beachName } summary`,
+            rating: { activeStars: 3, inactiveStars: 2 }
         }));
 
         getSegmentIds.mockReturnValue(Promise.resolve({
@@ -24,6 +27,11 @@ describe('handler', () => {
             'Freshwater': 'freshwater seg',
             'Manly': 'manly seg'
         }));
+    });
+
+    it('calls filtered with the correct arguments', async () => {
+        await handler();
+        expect(filter).toHaveBeenCalledWith({ activeStars: 3, inactiveStars: 2 });
     });
 
     it('should not send when filtered', async () => {

@@ -71,10 +71,7 @@ const getRating = (sixAMRow) => {
 
     const activeStars = $('.rating .active', ratingRow).length;
     const inactiveStars = $('.rating .inactive', ratingRow).length;
-    return {
-        string: `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`,
-        meta: { activeStars, inactiveStars }
-    };
+    return { activeStars, inactiveStars };
 };
 
 const mswURLs = {

@@ -11,20 +11,22 @@ exports.getSummary = async (name, spotId) => {
 
     const beachData = getCombinedData(surflineBeachData, magicSeaWeedBeachData);
 
-    const { rating } = beachData;
     const weather = getFormattedWeather(beachData);
     const waves = getFormattedWaveHeight(beachData);
     const tide = getFormattedTide(beachData);
     const swells = getFormattedSwells(beachData);
     const wind = getFormattedWind(beachData);
+    const rating = getFormattedRating(beachData);
 
     return {
         name,
-        message: `${ name } ${ rating.string }\n${ weather }\n${ waves }, ${ tide }, the swell's ${ swells }, ${ wind }`,
-        meta: rating.meta
+        message: `${ name } ${ rating }\n${ weather }\n${ waves }, ${ tide }, the swell's ${ swells }, ${ wind }`,
+        rating: beachData.rating
     };
 };
 
+const getFormattedRating = ({ rating: { activeStars, inactiveStars } }) =>
+    `${ '★'.repeat(activeStars) }${ '☆'.repeat(inactiveStars) }`;
 const getFormattedWaveHeight = ({ waveHeightInFeet }) =>
     `${ waveHeightInFeet }ft waves`;
 const getFormattedTide = ({ tideType }) =>
