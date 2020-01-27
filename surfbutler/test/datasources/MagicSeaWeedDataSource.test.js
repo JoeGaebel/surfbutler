@@ -14,11 +14,8 @@ describe('MagicSeaWeedDataSource', () => {
         it('returns the rating for tomorrow at 6am', async () => {
             const { rating } = await getBeachData('some spot name');
             expect(rating).toEqual({
-                string: '★★☆',
-                meta: {
-                    activeStars: 2,
-                    inactiveStars: 1
-                }
+                activeStars: 2,
+                inactiveStars: 1
             });
         });
     });

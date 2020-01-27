@@ -17,9 +17,9 @@ exports.handler = async () => {
     const segments = await getSegmentIds(applicationId);
 
     for (const summaryRequest of summaryRequests) {
-        const { name, message, meta } = summaryRequest;
+        const { name, message, rating } = summaryRequest;
         const key = name.replace(' ', '-');
-        if (filter(meta)) {
+        if (filter(rating)) {
             console.log(`Filtered out ${ key } with conditions: ${ JSON.stringify(summaryRequest) }`);
             continue;
         }
