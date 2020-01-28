@@ -97,7 +97,7 @@ describe('Combinator#getCombinedData', () => {
         });
 
         surfForecastBeachData = new BeachData({
-            dataSource: 'msw',
+            dataSource: 'surfforecast',
             rating: NaN,
             waveHeightInFeet: NaN,
             swellHeightInFeet: NaN,
@@ -123,5 +123,13 @@ describe('Combinator#getCombinedData', () => {
 
         expect(fieldData).toBeDefined();
         expect(fieldData).toEqual(surflineBeachData[field]);
+    });
+
+    it('sends a console error if the rating from Surfforecast and MSW are greatly different', () => {
+        mswBeachData.rating = 1;
+        surfForecastBeachData.rating = 5;
+        getCombinedData(mswBeachData, surflineBeachData, surfForecastBeachData);
+
+        expect(console.error).toHaveBeenCalledWith(expect.stringContaining('rating'));
     });
 });

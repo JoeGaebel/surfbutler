@@ -1,6 +1,7 @@
 const { getBeachData } = require('../../src/datasources/MagicSeaWeedDataSource');
 const { generateFixture } = require('./magicSeaWeedFixtureGenerator');
 const rp = require('request-promise');
+const { BeachData } = require('../../src/datasources/BeachData');
 
 jest.mock('request-promise');
 
@@ -97,5 +98,24 @@ describe('MagicSeaWeedDataSource', () => {
                 expect(beachData.waveHeightInFeet).toEqual(2);
             });
         });
+    });
+
+    it('returns an empty beach data and console errors if it fails', async () => {
+        console.error = jest.fn();
+        rp.mockRejectedValue({});
+
+        const fallbackBeachData = await getBeachData('some spot name');
+
+        expect(console.error).toHaveBeenCalled();
+
+        expect(fallbackBeachData).toEqual(new BeachData({
+            rating: NaN,
+            waveHeightInFeet: NaN,
+            swellHeightInFeet: NaN,
+            swellPeriod: NaN,
+            name: 'some spot name',
+            windSpeedInKnots: NaN,
+            dataSource: 'msw'
+        }));
     });
 });

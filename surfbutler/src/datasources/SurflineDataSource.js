@@ -8,50 +8,70 @@ const { convertDirection, convertWeather } = require('../utilities/emojiConverte
 axiosRetry(axios, { retries: 10, retryDelay: axiosRetry.exponentialDelay });
 
 const getBeachData = async (name, spotId) => {
-    const weatherResponse = await getWeatherData(spotId);
-    const sunriseTimestamp = getSunriseTimestamp(weatherResponse);
+    try {
+        const weatherResponse = await getWeatherData(spotId);
+        const sunriseTimestamp = getSunriseTimestamp(weatherResponse);
 
-    const values = await Promise.all([
-        getWaveHeightSummary(spotId, sunriseTimestamp),
-        getSwellSummary(spotId, sunriseTimestamp),
-        getTideSummary(spotId, sunriseTimestamp),
-        getWeatherSummary(weatherResponse, sunriseTimestamp),
-        getWindSummary(spotId, sunriseTimestamp),
-    ]);
+        const values = await Promise.all([
+            getWaveHeightSummary(spotId, sunriseTimestamp),
+            getSwellSummary(spotId, sunriseTimestamp),
+            getTideSummary(spotId, sunriseTimestamp),
+            getWeatherSummary(weatherResponse, sunriseTimestamp),
+            getWindSummary(spotId, sunriseTimestamp),
+        ]);
 
-    const [
-        waveHeightInFeet,
-        {
+        const [
+            waveHeightInFeet,
+            {
+                swellHeightInFeet,
+                swellPeriod,
+                swellDirectionEmoji
+            },
+            { tideType },
+            {
+                temperature,
+                weatherEmoji,
+                sunriseTime,
+            },
+            {
+                windSpeedInKnots,
+                windDirectionEmoji
+            }
+        ] = values;
+
+        return new BeachData({
+            name,
+            waveHeightInFeet,
             swellHeightInFeet,
             swellPeriod,
-            swellDirectionEmoji
-        },
-        { tideType },
-        {
+            swellDirectionEmoji,
             temperature,
             weatherEmoji,
             sunriseTime,
-        },
-        {
             windSpeedInKnots,
-            windDirectionEmoji
-        }
-    ] = values;
+            windDirectionEmoji,
+            tideType,
+            dataSource: 'surfline'
+        });
+    } catch (e) {
+        console.error('Error when getting rating from Surfline', e);
 
-    return new BeachData({
-        name,
-        waveHeightInFeet,
-        swellHeightInFeet,
-        swellPeriod,
-        swellDirectionEmoji,
-        temperature,
-        weatherEmoji,
-        sunriseTime,
-        windSpeedInKnots,
-        windDirectionEmoji,
-        tideType,
-        dataSource: 'surfline'
-    });
+        return new BeachData({
+            name: name,
+            rating: NaN,
+            waveHeightInFeet: NaN,
+            swellHeightInFeet: NaN,
+            swellPeriod: NaN,
+            swellDirectionEmoji: NaN,
+            temperature: NaN,
+            weatherEmoji: NaN,
+            sunriseTime: NaN,
+            windSpeedInKnots: NaN,
+            windDirectionEmoji: NaN,
+            tideType: NaN,
+            dataSource: 'surfline'
+        });
+    }
 };
 
 exports.getBeachData = getBeachData;
@@ -120,7 +140,7 @@ const getHighestSwell = (swells) => {
             highestSwell = swell;
         } else if (swell.height === highestHeight) {
             // logging so that we can verify if this can happen and improve which of the swells we display in that case
-            console.log('There where two equaly high swells:', swell, 'and ', highestSwell);
+            console.log('There were two equally high swells:', swell, 'and ', highestSwell);
         }
     });
     return highestSwell;
@@ -167,9 +187,7 @@ const getWindSummary = async (spotId, sunriseTimestamp) => {
 };
 
 const queryEndpoint = (url) => axios.get(url)
-    .then(response => response.data.data)
-    .catch(error => console.log('Error while quering the API endpoint: ', url, ' ',
-        error));
+    .then(response => response.data.data);
 
 const getWeatherData = async (spotId) => {
     const weatherUrl = `http://services.surfline.com/kbyg/spots/forecasts/weather?spotId=${ spotId }&days=2&intervalHours=4`;

@@ -2,6 +2,7 @@ const { round } = require('./utilities/numberUtils');
 const { BeachData } = require('./datasources/BeachData');
 
 exports.getCombinedData = (...beachDatas) => {
+    alertForRatingDifference(beachDatas);
     const combinedBeachData = averageData(beachDatas);
     setSurflineData(beachDatas, combinedBeachData);
 
@@ -73,4 +74,13 @@ const setSurflineData = (beachDatas, combinedBeachData) => {
     surflineFields.forEach(field => {
         combinedBeachData[field] = surflineData[field];
     });
+};
+
+const alertForRatingDifference = (beachDatas) => {
+    const mswData = beachDatas.find(data => data.dataSource === 'msw');
+    const surfForecastData = beachDatas.find(data => data.dataSource === 'surfforecast');
+
+    if (Math.abs(mswData.rating - surfForecastData.rating) >= 3) {
+        console.error(`MSW rating ${ mswData.rating } is very different than SurfForecast rating ${ surfForecastData.rating }`);
+    }
 };

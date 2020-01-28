@@ -12,7 +12,7 @@ describe('getSummary', () => {
         expect(name).toEqual('Bondi');
         expect(rating).toBeFinite();
 
-        expect(message).toMatch(new RegExp('Bondi [★]+'));
+        expect(message).toMatch(new RegExp('Bondi [★]*'));
         expect(message).toMatch(new RegExp('.*º.*, sunrise .*:'));
         expect(message).toMatch(new RegExp('.*ft waves'));
         expect(message).toMatch(new RegExp('.*.*tide'));

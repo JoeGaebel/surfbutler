@@ -6,27 +6,42 @@ const $ = require('cheerio');
 const moment = require('moment-timezone');
 
 exports.getBeachData = async (spotName) => {
-    const url = mswURLs[spotName];
-    const html = await rp(url);
+    try {
+        const url = mswURLs[spotName];
+        const html = await rp(url);
 
-    const tomorrowsDate = moment.tz('Australia/Sydney').add(1, 'day').format('DDMM');
-    const sixAMRow = $(`tr[data-date$="${ tomorrowsDate }"]`, html)[2];
+        const tomorrowsDate = moment.tz('Australia/Sydney').add(1, 'day').format('DDMM');
+        const sixAMRow = $(`tr[data-date$="${ tomorrowsDate }"]`, html)[2];
 
-    const waveHeightInFeet = getWaveHeight(sixAMRow);
-    const swellHeightInFeet = getSwellHeight(sixAMRow);
-    const swellPeriod = getSwellPeriod(sixAMRow);
-    const windSpeedInKnots = getWindSpeedInKnots(sixAMRow);
-    const rating = getRating(sixAMRow);
+        const waveHeightInFeet = getWaveHeight(sixAMRow);
+        const swellHeightInFeet = getSwellHeight(sixAMRow);
+        const swellPeriod = getSwellPeriod(sixAMRow);
+        const windSpeedInKnots = getWindSpeedInKnots(sixAMRow);
+        const rating = getRating(sixAMRow);
 
-    return new BeachData({
-        rating,
-        waveHeightInFeet,
-        swellHeightInFeet,
-        swellPeriod,
-        name: spotName,
-        windSpeedInKnots,
-        dataSource: 'msw'
-    });
+        return new BeachData({
+            rating,
+            waveHeightInFeet,
+            swellHeightInFeet,
+            swellPeriod,
+            name: spotName,
+            windSpeedInKnots,
+            dataSource: 'msw'
+        });
+    } catch (e) {
+        console.error('Error when getting rating from MagicSeaweed', e);
+        
+        return new BeachData({
+            rating: NaN,
+            waveHeightInFeet: NaN,
+            swellHeightInFeet: NaN,
+            swellPeriod: NaN,
+            name: spotName,
+            windSpeedInKnots: NaN,
+            dataSource: 'msw'
+        });
+    }
+
 };
 
 const getWaveHeight = (row) => {

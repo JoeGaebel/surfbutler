@@ -1,5 +1,6 @@
 const { getBeachData } = require('../../src/datasources/SurflineDataSource');
 const SurflineDataSource = require('rewire')('../../src/datasources/SurflineDataSource');
+const { BeachData } = require('../../src/datasources/BeachData');
 
 describe('SurflineDataSource', () => {
     beforeEach(() => {
@@ -25,7 +26,11 @@ describe('SurflineDataSource', () => {
     });
 
     describe('getSwell', () => {
-        const getSwell = SurflineDataSource.__get__('getSwell');
+        let getSwell;
+
+        beforeEach(() => {
+            getSwell = SurflineDataSource.__get__('getSwell');
+        });
 
         it('getOptimalScore', () => {
             expect(getSwell([
@@ -147,6 +152,41 @@ describe('SurflineDataSource', () => {
             const sunrise = 1569699420; // 5:37am
             const weatherSummary = getWeatherSummary(weatherEntries, sunrise);
             expect(weatherSummary).toEqual({ sunriseTime: '05:37', temperature: 28, weatherEmoji: '☀️' });
+        });
+    });
+
+    describe('when getting beach data fails', () => {
+        beforeEach(() => {
+            jest.mock('axios', () => ({ get: jest.fn().mockRejectedValue({}) }));
+            console.error = jest.fn();
+        });
+
+        afterEach(() => {
+            jest.unmock('axios');
+        });
+
+        it('returns an empty beach data and console errors if it fails', async () => {
+            const fallbackBeachData = await getBeachData('some spot name');
+
+            expect(console.error).toHaveBeenCalled();
+
+            expect(fallbackBeachData).toEqual(new BeachData({
+                name: 'some spot name',
+                rating: NaN,
+                waveHeightInFeet: NaN,
+                swellHeightInFeet: NaN,
+                swellPeriod: NaN,
+                swellDirectionEmoji: NaN,
+                weatherEmoji: NaN,
+                temperature: NaN,
+                sunriseTime: NaN,
+                windSpeedInKnots: NaN,
+                windDirectionEmoji: NaN,
+                tideType: NaN,
+                dataSource: 'surfline',
+            }));
+
+
         });
     });
 });
